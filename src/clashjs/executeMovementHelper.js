@@ -11,6 +11,12 @@ var safeMovement = (value, size) => {
 var clashCoreUtils = (data) => {
   var {playerIndex, playerAction, playerStates, playerInstances, gameEnvironment, evtCallback, coreCallback} = data;
   var currentPlayerState = playerStates[playerIndex];
+  
+  currentPlayerState.ammoDuration -= 1;
+  console.log(currentPlayerState.playerIndex, currentPlayerState.ammoDuration, currentPlayerState.ammo);
+  if (!currentPlayerState.ammoDuration || currentPlayerState.ammoDuration < 1) {
+    currentPlayerState.ammo = 0;
+  }
 
   if (DIRECTIONS.indexOf(playerAction) !== -1) {
     currentPlayerState.direction = playerAction;
@@ -40,10 +46,12 @@ var clashCoreUtils = (data) => {
     currentPlayerState.position[1] = safeMovement(currentPlayerState.position[1], gameEnvironment.gridSize);
 
     // check if the player collected ammo
+
     gameEnvironment.ammoPosition.forEach((el, index) => {
       if (el[0] === currentPlayerState.position[0] && el[1] === currentPlayerState.position[1]) {
         gameEnvironment.ammoPosition.splice(index, 1);
         currentPlayerState.ammo += 1;
+        currentPlayerState.ammoDuration = 10;
       }
     });
   }
