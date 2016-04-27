@@ -5,7 +5,7 @@ var manuelmhtr = {
   info: {
     name: 'Manuelmhtr',
     style: 3,
-    handicap: 1
+    handicap: 2
   },
   ai: function(playerState, enemiesStates, gameEnvironment) {
     var response;

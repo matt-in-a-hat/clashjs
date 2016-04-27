@@ -59,6 +59,22 @@ var isVisible = (originalPosition = [], finalPosition = [], direction = []) => {
   }
 };
 
+var isInRange = (originalPosition = [], finalPosition = [], direction = []) => {
+  var range = 5;
+  switch (direction) {
+    case DIRECTIONS[0]:
+      return (originalPosition[0] - finalPosition[0]) < range;
+    case DIRECTIONS[1]:
+      return (finalPosition[1] - originalPosition[1]) < range;
+    case DIRECTIONS[2]:
+      return (finalPosition[0] - originalPosition[0]) < range;
+    case DIRECTIONS[3]:
+      return (originalPosition[1] - finalPosition[1]) < range;
+    default:
+      break;
+  }
+}
+
 var canKill = (currentPlayerState = {}, enemiesStates = []) => {
   return enemiesStates.some((enemyObject) => {
     return (enemyObject.isAlive && isVisible(currentPlayerState.position, enemyObject.position, currentPlayerState.direction));
@@ -66,6 +82,7 @@ var canKill = (currentPlayerState = {}, enemiesStates = []) => {
 };
 
 module.exports = {
+  isInRange,
   randomMove,
   getDirection,
   isVisible,

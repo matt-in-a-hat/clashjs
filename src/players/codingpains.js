@@ -5,7 +5,7 @@ var codingpains = {
   info: {
     name: 'HGE-7',
     style: 8,
-    handicap: 1
+    handicap: 2
   },
 
   ai: function(player, enemies, map) {

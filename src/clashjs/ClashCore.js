@@ -30,7 +30,7 @@ class ClashJS {
 
   setupGame() {
     this._gameEnvironment = {
-      gridSize: 13,
+      gridSize: 36,
       ammoPosition: []
     };
     this._rounds++;
@@ -80,7 +80,7 @@ class ClashJS {
   }
 
   nextPly() {
-    if (this._sudeenDeathCount > (300 * this._alivePlayerCount)) {
+    if (this._sudeenDeathCount > (500 * this._alivePlayerCount)) {
       this._handleCoreAction('DRAW');
       return this._evtCallback('DRAW');
     }
