@@ -9,13 +9,14 @@ var safeMovement = (value, size) => {
 };
 
 var clashCoreUtils = (data) => {
-  var {playerIndex, playerAction, playerStates, playerInstances, gameEnvironment, evtCallback, coreCallback} = data;
+  var {playerIndex, playerAction, playerStates, playerInstances, gameEnvironment, evtCallback, coreCallback, handicap} = data;
   var currentPlayerState = playerStates[playerIndex];
   
-  currentPlayerState.ammoDuration -= 1;
-  console.log(currentPlayerState.playerIndex, currentPlayerState.ammoDuration, currentPlayerState.ammo);
-  if (!currentPlayerState.ammoDuration || currentPlayerState.ammoDuration < 1) {
-    currentPlayerState.ammo = 0;
+  if (handicap && handicap > 0) {
+    currentPlayerState.ammoDuration -= 1;
+    if (!currentPlayerState.ammoDuration || currentPlayerState.ammoDuration < 1) {
+      currentPlayerState.ammo = 0;
+    }
   }
 
   if (DIRECTIONS.indexOf(playerAction) !== -1) {

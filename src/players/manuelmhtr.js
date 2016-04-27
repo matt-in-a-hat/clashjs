@@ -4,7 +4,8 @@ var ORIENTATION = {north: 'vertical', east: 'horizontal', south: 'vertical', wes
 var manuelmhtr = {
   info: {
     name: 'Manuelmhtr',
-    style: 3
+    style: 3,
+    handicap: 1
   },
   ai: function(playerState, enemiesStates, gameEnvironment) {
     var response;

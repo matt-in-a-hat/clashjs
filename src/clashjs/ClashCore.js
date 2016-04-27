@@ -101,7 +101,8 @@ class ClashJS {
           clonedStates[this._currentPlayer],
           otherPlayers,
           _.cloneDeep(this._gameEnvironment, true)
-        )
+        ),
+        this._playerInstances[this._currentPlayer]._playerInfo.handicap
       );
     }
 
@@ -148,9 +149,10 @@ class ClashJS {
     }
   }
 
-  _savePlayerAction(playerIndex, playerAction) {
+  _savePlayerAction(playerIndex, playerAction, handicap) {
     this._playerStates = executeMovementHelper(
       {
+        handicap: handicap,
         playerIndex: playerIndex,
         playerAction: playerAction,
         playerStates: this._playerStates,
