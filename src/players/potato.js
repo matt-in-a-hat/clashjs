@@ -1,4 +1,4 @@
-var utils = require('../lib/utils.js');
+var utils = require('../lib/utils.js')
 
 var ammo
 
@@ -8,14 +8,34 @@ var Potato = {
     style: 0
   },
   ai: (playerState, enemiesStates, gameEnvironment) => {
-    console.log('Potato will kick your arse')
-
     if (playerState.ammo > 0 && utils.canKill(playerState, enemiesStates)) {
       return 'shoot'
     }
 
-    if (playerState.ammo > 2) {
-      return utils.safeRandomMove()
+    if (playerState.ammo > 1) {
+      var players = enemiesStates
+        .filter(function(player) {
+          return player.isAlive
+        })
+        .map(function (player) {
+          return {
+            distance: utils.getDistance(playerState.position, player.position),
+            player: player
+          }
+        })
+        .sort(function(a, b) {
+          return a.distance - b.distance
+        })
+
+      var enemy = players[0].player
+
+      var enemyDirection = utils.getDirection(playerState.position, enemy.position)
+
+      if (enemyDirection !== playerState.direction) {
+        return enemyDirection
+      } else {
+        return 'move'
+      }
     }
 
     var ammoStillExists = ammo && gameEnvironment.ammoPosition.some(function (x){
@@ -31,19 +51,21 @@ var Potato = {
           }
         })
         .sort(function(a, b) {
-          return a - b
+          return a.distance - b.distance
         })
-
 
       if (ammos.length === 0 ) {
         return utils.safeRandomMove()
       }
 
       if (ammos.length > 1) {
-        ammo = ammos[1].ammo
+        if (ammos[0].distance < 5) {
+          ammo = ammos[0]
+        } else {
+          ammo = ammos[1].ammo
+        }
       }
-
-      if (ammos.length === 1) {
+      else if (ammos.length === 1) {
         ammo = ammos[0].ammo
       }
     }
