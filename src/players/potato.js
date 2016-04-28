@@ -31,9 +31,8 @@ var Potato = {
           }
         })
         .sort(function(a, b) {
-          return a - b
+          return a.distance - b.distance
         })
-
 
       if (ammos.length === 0 ) {
         return utils.safeRandomMove()
