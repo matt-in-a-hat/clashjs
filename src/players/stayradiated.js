@@ -1,26 +1,26 @@
 var utils = require('../lib/utils.js');
 
-var xmontoya = {
-  info: {
-    name: 'Xmontoya89',
-    style: 1
-  },
-  ai: (playerState, enemiesStates, gameEnvironment) => {
-    var directionToAmmo;
+function ai(player, enemies, game) {
+  var directionToAmmo;
 
-    if (utils.canKill(playerState, enemiesStates) && playerState.ammo) {
-      return 'shoot';
-    }
-
-    if (gameEnvironment.ammoPosition.length) {
-      directionToAmmo = utils.fastGetDirection(playerState.position, gameEnvironment.ammoPosition[0]);
-
-      if (directionToAmmo !== playerState.direction) return directionToAmmo;
-      return utils.safeRandomMove();
-    }
-
-    return 'move';
+  if (utils.canKill(player, enemiesStates) && player.ammo) {
+    return 'shoot';
   }
-};
 
-module.exports = xmontoya;
+  if (gameEnvironment.ammoPosition.length) {
+    directionToAmmo = utils.fastGetDirection(player.position, gameEnvironment.ammoPosition[0]);
+
+    if (directionToAmmo !== player.direction) return directionToAmmo;
+    return utils.safeRandomMove();
+  }
+
+  return 'move';
+}
+
+module.exports = {
+  info: {
+    name: 'Stayradiated',
+    style: 2,
+  },
+  ai: ai,
+};
