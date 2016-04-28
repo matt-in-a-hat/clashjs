@@ -69,7 +69,7 @@ var clashCoreUtils = (data) => {
     });
 
     playerStates.forEach((enemyObject, enemyIndex) => {
-      if (enemyObject.isAlive && utils.isVisible(currentPlayerState.position, enemyObject.position, currentPlayerState.direction) && (enemyObject.state && !enemyObject.state.meme)) {
+      if (enemyObject.isAlive && utils.isVisible(currentPlayerState.position, enemyObject.position, currentPlayerState.direction)) {
         if (handicap && handicap > 1 && !utils.isInRange(currentPlayerState.position, enemyObject.position, currentPlayerState.direction)) {
           return;
         }
