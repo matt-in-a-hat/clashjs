@@ -2,5 +2,9 @@ module.exports = {
   siegfried: require('./players/siegfried.js'),
   horror: require('./players/horror.js'),
   xmontoya: require('./players/xmontoya.js'),
-  margeux: require('./players/margeux.js')
+  margeux: require('./players/margeux.js'),
+  Ψ: require('./players/psiphi.js'),
+  potato: require('./players/potato.js'),
+  stayradiated: require('./players/stayradiated.js'),
+  java4eva: require('./players/java4eva.js')
 }
