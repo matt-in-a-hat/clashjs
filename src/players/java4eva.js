@@ -1,6 +1,9 @@
 var utils = require('../lib/utils.js');
 var noAmmo = true;
 var DIRECTIONS = ['north', 'east', 'south', 'west'];
+var playerStateG = {}
+var enemiesStatesG = {}
+var gameEnvironmentG = {}
 
 var canBeShot = function(player, enemies) {
   // make arr of if you can be shot [true, false, false, true]
@@ -35,24 +38,27 @@ var turnToKill = function(player, enemies) {
 
 var getEnemiesWithAmmo = function(enemies) {
   var dangerous = enemies.filter((enemy) => enemy.ammo);
-  if (dangerous.length) return dangerous;
+  if (dangerous.length) {
+    return dangerous;
+  }
   return enemies;
 };
 
 var findCloseAmmo = function(player, ammoPosition) {
   var closest;
 
-  if (!ammoPosition.length) return;
+  if (!ammoPosition.length) {
+    return;
+  }
 
   closest = ammoPosition[0];
 
-  ammoPosition.forEach(function(ammo) {
-    var isCloser = utils.getDistance(player.position, ammo) < utils.getDistance(player.position, closest);
+  for (var i = 0; ammoPosition.length < i; i++ ) {
+    var isCloser = utils.getDistance(player.position, ammoPosition[i]) < utils.getDistance(player.position, closest);
     if (isCloser) {
       closest = ammo;
     }
-  });
-
+  }
   return closest;
 };
 
@@ -66,12 +72,27 @@ var getReallySafeMove = () => {
   return utils.safeRandomMove()
 }
 
+var moveToAmmo = () => {
+  var directionToAmmo = utils.fastGetDirection(playerStateG.position, findCloseAmmo(playerStateG, gameEnvironmentG.ammoPosition))
+
+  if (directionToAmmo !== playerStateG.direction) {
+    return directionToAmmo;
+  }
+
+  return 'move';
+}
+
 var java4eva = {
   info: {
     name: 'Java4Eva',
-    style: 2
+    style: 2,
+    handicap: 1,
   },
   ai: (playerState, enemiesStates, gameEnvironment) => {
+    playerStateG = playerState;
+    enemiesStatesG = enemiesStates;
+    gameEnvironmentG = gameEnvironment;
+
     var directionToAmmo;
     var directionToEnemy;
     if (playerState.ammo >0){
@@ -82,25 +103,31 @@ var java4eva = {
     }
 
     if (gameEnvironment.ammoPosition.length && noAmmo) {
-      directionToAmmo = utils.fastGetDirection(playerState.position, findCloseAmmo(playerState, gameEnvironment.ammoPosition))
-
-      if (directionToAmmo !== playerState.direction) return directionToAmmo;
-
-      return 'move';
+      return moveToAmmo()
     }
 
-    var dangers = getEnemieswithAmmoAndVisible(playerState, enemiesStates)
+    var dangers = getEnemiesWithAmmo(playerState, enemiesStates)
     if (dangers.length === 0) {
       dangers = enemiesStates;
     }
-    console.log(dangers)
 
     //LOOK for an enemy
     if(!noAmmo){
-      var directionToEnemy
+
       if (dangers.length === 0) {
         dangers = enemiesStates;
       }
+
+      if (utils.canKill(playerState, dangers) && playerState.ammo) {
+        return 'shoot';
+      }
+
+      if (utils.canKill(playerState, enemiesStates) && playerState.ammo) {
+        return 'shoot';
+      }
+
+      var directionToEnemy
+
       if (dangers && dangers.length < 0) {
         directionToEnemy = utils.fastGetDirection(playerState.position, dangers[0].position);
       } else {
@@ -111,26 +138,18 @@ var java4eva = {
         if (directionToMargeus !== dangers[0].position){
                   return directionToEnemy;
         } else {
-                  return utils.safeRandomMove();
+                  return getReallySafeMove();
         }
       }
       if (utils.canKill(playerState, enemiesStates) && playerState.ammo) {
-      return 'shoot';
+        return 'shoot';
       }else{
         return getReallySafeMove()
       }
     }
 
-
-    if (utils.canKill(playerState, enemiesStates) && playerState.ammo) {
-      return 'shoot';
-    }
-
     if (gameEnvironment.ammoPosition.length ) {
-      directionToAmmo = utils.fastGetDirection(playerState.position, findCloseAmmo(playerState, gameEnvironment.ammoPosition))
-
-      if (directionToAmmo !== playerState.direction) return directionToAmmo;
-      return 'move';
+      return moveToAmmo()
     }
 
     return getReallySafeMove()
