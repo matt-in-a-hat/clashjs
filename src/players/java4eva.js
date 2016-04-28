@@ -128,18 +128,28 @@ var java4eva = {
 
       var directionToEnemy
 
+      var closestEnemyDist = utils.getDistance(playerState.position, dangers[0].position)
+      var closestEnemyNum = 0;
+
+      for(var i = 0; dangers.length < i; i++) {
+        var newDist = utils.getDistance(playerState.position, dangers[i].position)
+        if(newDist < closestEnemyDist ) {
+          closestEnemyDist = newDist
+          closestEnemyNum = i;
+        }
+      }
+
       if (dangers && dangers.length < 0) {
-        directionToEnemy = utils.fastGetDirection(playerState.position, dangers[0].position);
+        directionToEnemy = utils.fastGetDirection(playerState.position, dangers[closestEnemyNum].position);
       } else {
         directionToEnemy = utils.fastGetDirection(playerState.position, enemiesStates[0].position);
       }
+
       if (directionToEnemy !== playerState.direction){
-        var directionToMargeus = utils.fastGetDirection(dangers[0].position, playerState.position);
 
-        var closestEnemy = utils.getDistance(playerState, dangers[0])
-        console.log(closestEnemy)
+        var directionToMargeus = utils.fastGetDirection(dangers[closestEnemyNum].position, playerState.position);
 
-        if (directionToMargeus !== dangers[0].position){
+        if (directionToMargeus !== dangers[closestEnemyNum].position){
                   return directionToEnemy;
         } else {
                   return
