@@ -9,6 +9,7 @@ var gameRunner = {
   info: {
     name: 'paypr',
     style: 1,
+    handicap: 1,
     state: {
         test: "hello"
     }
@@ -164,7 +165,14 @@ ai: (playerState, enemiesState, gameEnvironment) => {
 
     if(hasAmmo && enemiesLeft === 1) {
         //hunt the last player
-        return utils.getDirection(playerState.position,lastEnemy.position);
+        var newDir = utils.getDirection(playerState.position,lastEnemy.position);
+
+        if(newDir !== playerState.direction) {
+            return newDir;
+        }
+        else {
+            return 'move';
+        }
     }
 
     //move to ammo
