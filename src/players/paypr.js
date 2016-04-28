@@ -9,7 +9,6 @@ var gameRunner = {
   info: {
     name: 'paypr',
     style: 1,
-    handicap: 1,
     state: {
         test: "hello"
     }
@@ -107,20 +106,6 @@ ai: (playerState, enemiesState, gameEnvironment) => {
             }
             else return 'east';
         }
-
-
-
-        /*
-        // is moving left and facing east                if moving right and facing west
-        if( (enPos[0]+1 === myX && enDir == 'east') || (enPos[0]-1 === myX && enDir == 'west'))  { //is left and moving east
-            if(isUp(enPos, myPos)) {
-                console.log("PREDICTING ENEMY WILL BE NORTH");
-                return 'north';
-            }
-            console.log("PREDICTING ENEMY WILL BE SOUTH")
-            else return 'south';
-        }
-        */
     }
 
     //move to ammo
