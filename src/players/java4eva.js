@@ -135,10 +135,13 @@ var java4eva = {
       }
       if (directionToEnemy !== playerState.direction){
         var directionToMargeus = utils.fastGetDirection(dangers[0].position, playerState.position);
+
+        var closestEnemy = utils.getDistance(playerState, dangers[0])
+
         if (directionToMargeus !== dangers[0].position){
                   return directionToEnemy;
         } else {
-                  return getReallySafeMove();
+                  return
         }
       }
       if (utils.canKill(playerState, enemiesStates) && playerState.ammo) {
