@@ -13,7 +13,24 @@ var Potato = {
     }
 
     if (playerState.ammo > 2) {
-      return utils.safeRandomMove()
+      var players = enemiesStates
+        .map(function (player) {
+          return {
+            distance: utils.getDistance(playerState.position, player.position),
+            player: player
+          }
+        })
+        .sort(function(a, b) {
+          return a.distance - b.distance
+        })
+
+      var enemy = players[0]
+
+      var enemyDirection = utils.getDirection(playerState.position, enemy)
+
+      if (enemyDirection !== playerState.direction) {
+        return enemyDirection
+      }
     }
 
     var ammoStillExists = ammo && gameEnvironment.ammoPosition.some(function (x){
@@ -37,10 +54,14 @@ var Potato = {
       }
 
       if (ammos.length > 1) {
-        ammo = ammos[1].ammo
+        console.log('ammos[0].distance: ', ammos[0].distance)
+        if (ammos[0].distance < 5) {
+          ammo = ammos[0]
+        } else {
+          ammo = ammos[1].ammo
+        }
       }
-
-      if (ammos.length === 1) {
+      else if (ammos.length === 1) {
         ammo = ammos[0].ammo
       }
     }
