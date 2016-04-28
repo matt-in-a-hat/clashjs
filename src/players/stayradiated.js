@@ -1,5 +1,7 @@
 var utils = require('../lib/utils.js');
 
+const LOOK_INTO_THE_FUTURE = 6;
+
 // [y, x] coords? not today!
 function fixPos(player) {
   const [y, x] = player.position;
@@ -15,7 +17,7 @@ function north(map, [x, y]) {
   return map[x][y - 1];
 }
 function south(map, [x, y]) {
-  if (y === map.length - 1) { return -1; }
+  if (y >= map.length - 1) { return -1; }
   return map[x][y + 1];
 }
 function east(map, [x, y]) {
@@ -23,7 +25,7 @@ function east(map, [x, y]) {
   return map[x - 1][y];
 }
 function west(map, [x, y]) {
-  if (x === map.length - 1) { return -1; }
+  if (x >= map.length - 1) { return -1; }
   return map[x + 1][y];
 }
 function getPos(map, direction, position) {
@@ -174,7 +176,7 @@ function mapEnemie(map, enemie, value) {
 }
 
 function recursiveMapEnemie(map, enemie, value) {
-  if (value > 6) {
+  if (value > LOOK_INTO_THE_FUTURE) {
     return;
   }
 
