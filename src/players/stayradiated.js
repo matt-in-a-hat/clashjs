@@ -186,7 +186,9 @@ function recursiveMapEnemie(ammo, map, enemie, value) {
     return;
   }
 
-  mapEnemie(map, enemie, value);
+  if (enemie.ammo > 0) {
+    mapEnemie(map, enemie, value);
+  }
 
   recursiveMapEnemie(
     ammo,
@@ -222,10 +224,6 @@ function ai(player, enemies, game) {
 
   enemies.forEach((enemie) => {
     fixPos(enemie);
-
-    if (enemie.ammo === 0) {
-      return;
-    }
 
     recursiveMapEnemie(game.ammoPosition, map, enemie, 1);
   });
