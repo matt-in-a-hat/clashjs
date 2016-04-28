@@ -1,6 +1,6 @@
 var utils = require('../lib/utils.js');
 
-const LOOK_INTO_THE_FUTURE = 6;
+const LOOK_INTO_THE_FUTURE = 4;
 
 // [y, x] coords? not today!
 function fixPos(player) {
@@ -41,28 +41,27 @@ function getPos(map, direction, position) {
   }
 }
 
-function whereToGo(map, player) {
+function whereToGo(map, player, enemies, game) {
   const {direction, position} = player;
   const [x, y] = position;
 
   const current = map[y][x];
   const ahead = getPos(map, direction, position);
 
-  if (ahead > current) {
+  if (ahead > current || current === 1) {
     return 'move';
   }
 
-  const danger = [
+  let danger = [
     ['north', north(map, position)],
     ['south', south(map, position)],
     ['east', east(map, position)],
     ['west', west(map, position)]
   ];
 
-  danger.sort((a, b) => b[1] - a[1]);
-  if (danger[0][0] === current) {
-    return '';
-  }
+  danger = danger
+    .filter((a) => a[1] > -1)
+    .sort((a, b) => b[1] - a[1]);
 
   return danger[0][0];
 }
@@ -232,7 +231,7 @@ function ai(player, enemies, game) {
 
   console.log(printMap(map, player));
 
-  return whereToGo(map, player);
+  return whereToGo(map, player, enemies, game);
 
   /*
   let directionToAmmo;
