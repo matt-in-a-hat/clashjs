@@ -1,11 +1,8 @@
 module.exports = {
-  siegfried: require('./players/siegfried.js'),
-  horror: require('./players/horror.js'),
   sakiko: require('./players/sakiko.js'),
   xmontoya: require('./players/xmontoya.js'),
-  margeux: require('./players/margeux.js'),
   flippycube: require('./players/flippycube.js'),
-  margeux: require('./players/margeux.js'),
+  psiphi: require('./players/psiphi.js'),
   Ψ: require('./players/psiphi.js'),
   potato: require('./players/potato.js'),
   stayradiated: require('./players/stayradiated.js'),
