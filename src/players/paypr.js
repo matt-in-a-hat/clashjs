@@ -23,6 +23,9 @@ ai: (playerState, enemiesState, gameEnvironment) => {
 
     console.log(playerState.custom);
 
+    console.log("PAYPR");
+    console.log(enemiesState);
+
     if(!playerState.custom) {
         playerState.custom = {};
     }
@@ -60,6 +63,40 @@ ai: (playerState, enemiesState, gameEnvironment) => {
             }
         }
         
+    }
+
+    //check to see if there are any enemies moving within direction
+    var myX = playerState.position[0];
+    var myY = playerState.position[1];
+    var myPos = playerState.position;
+
+    var isUp = function(myPosition, enemyPosition) {
+        return myPosition[1] - enemyPosition[1] > 0;
+    };
+
+    var isDown = function(myPosition, enemyPosition) {
+        return !isUp(myPosition,enemyPosition);
+    };
+
+    var isLeft = function(myPosition, enemyPosition) {
+        return myPosition[0] - enemyPosition[0] < 0;
+    };
+    var isRight = function(myPosition, enemyPosition) {
+        return !isLeft(myPosition,enemyPosition);
+    };
+
+    for(i=0; i<enemiesState.length && hasAmmo; i++) {
+        var enemy = enemiesState[i];
+        var enPos = enemy.position;
+        var enDir = enemy.direction;
+
+        // is moving left and facing east                if moving right and facing west
+        if( (enPos[0]-1 === myX-1 && enDir == 'east') || (enPos[0]+1 === myX+1 && enDir == 'west'))  { //is left and moving east
+            if(isUp(enPos, myPos)) {
+                return 'north';
+            }
+            else return 'south';
+        }
     }
 
     //move to ammo
