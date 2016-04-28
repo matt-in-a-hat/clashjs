@@ -1,6 +1,6 @@
 var utils = require('../lib/utils.js');
 
-var enemies = {}
+var enemies = {};
 
 module.exports = {
     info: {
@@ -18,21 +18,23 @@ module.exports = {
 
             var closestAmmo = findClosestAmmo(gameEnvironment.ammoPosition);
 
-            // if (playerState.ammo < 1) {
+            if (playerState.ammo === 0) {
                 directionToAmmo = utils.fastGetDirection(playerState.position, closestAmmo);
                 if (directionToAmmo !== playerState.direction) return directionToAmmo;
                 return 'move';
-            // } else {
+            }
             //     directionToAmmo = utils.fastGetDirection(playerState.position, closestAmmo);
             //     if (closestAmmo[0] === playerState.position[0] || closestAmmo[1] === playerState.position[1]) {
             //         if (directionToAmmo !== playerState.direction) return directionToAmmo;
             //     }
             // }
             //
-            // if (playerState.ammo > 2) {
-            //
-            // }
+            var dir = utils.fastGetDirection(playerState.position, fx());
+            if (dir !== playerState.direction) return dir;
+            return 'move';
+
         }
+
 
         return utils.safeRandomMove();
 
@@ -44,6 +46,16 @@ module.exports = {
                 }
             });
             return ammos[min];
+        }
+
+        function fx() {
+            var min = 0;
+            enemiesStates.forEach((e, i) => {
+                if (utils.getDistance(playerState.position, e.position) < utils.getDistance(playerState.position, enemiesStates[min].position)) {
+                    min = i;
+                }
+            });
+            return enemiesStates[min].position;
         }
     }
 };
