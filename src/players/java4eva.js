@@ -59,7 +59,10 @@ var java4eva = {
     }
 
     if (gameEnvironment.ammoPosition.length && noAmmo) {
-      directionToAmmo = getClosestAmmo(playerState, gameEnvironment.ammoPosition[0])
+      directionToAmmo = utils.fastGetDirection(playerState.position, getClosestAmmo(playerState, gameEnvironment.ammoPosition))
+      console.log(directionToAmmo)
+      console.log(playerState.direction)
+      console.log(directionToAmmo !== playerState.direction)
 
       if (directionToAmmo !== playerState.direction) return directionToAmmo;
       return 'move';
@@ -91,7 +94,7 @@ var java4eva = {
     }
 
     if (gameEnvironment.ammoPosition.length ) {
-      directionToAmmo = getClosestAmmo(playerState, gameEnvironment.ammoPosition[0])
+      directionToAmmo = utils.fastGetDirection(playerState.position, getClosestAmmo(playerState, gameEnvironment.ammoPosition))
 
       if (directionToAmmo !== playerState.direction) return directionToAmmo;
       return 'move';
