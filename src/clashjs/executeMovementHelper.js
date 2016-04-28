@@ -11,7 +11,7 @@ var safeMovement = (value, size) => {
 var clashCoreUtils = (data) => {
   var {playerIndex, playerAction, playerStates, playerInstances, gameEnvironment, evtCallback, coreCallback, handicap} = data;
   var currentPlayerState = playerStates[playerIndex];
-  
+
   if (handicap && handicap > 0) {
     currentPlayerState.ammoDuration -= 1;
     if (!currentPlayerState.ammoDuration || currentPlayerState.ammoDuration < 1) {
@@ -69,7 +69,7 @@ var clashCoreUtils = (data) => {
     });
 
     playerStates.forEach((enemyObject, enemyIndex) => {
-      if (enemyObject.isAlive && utils.isVisible(currentPlayerState.position, enemyObject.position, currentPlayerState.direction)) {
+      if (enemyObject.isAlive && utils.isVisible(currentPlayerState.position, enemyObject.position, currentPlayerState.direction) && (enemyObject.state && !enemyObject.state.meme)) {
         if (handicap && handicap > 1 && !utils.isInRange(currentPlayerState.position, enemyObject.position, currentPlayerState.direction)) {
           return;
         }
