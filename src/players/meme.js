@@ -5,7 +5,8 @@ var meme = {
     name: 'meme',
     style: 1,
     state: {
-        test: "hello"
+        test: "hello",
+        meme: true
     }
 },
 ai: (playerState, enemiesState, gameEnvironment) => {
