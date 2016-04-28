@@ -11,5 +11,6 @@ module.exports = {
   stayradiated: require('./players/stayradiated.js'),
   java4eva: require('./players/java4eva.js'),
   paypr: require('./players/paypr.js'),
+  wayneholis: require('./players/wayneholis.js'),
   grrd: require('./players/grrd.js')
 }
