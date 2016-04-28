@@ -5,11 +5,56 @@ var ammo
 var Potato = {
   info: {
     name: 'Potato',
-    style: 0
+    style: 0,
+    handicap: 1
   },
   ai: (playerState, enemiesStates, gameEnvironment) => {
     if (playerState.ammo > 0 && utils.canKill(playerState, enemiesStates)) {
       return 'shoot'
+    }
+
+    if (enemiesStates.length > 5) {
+      var dir = playerState.direction
+
+      var x = playerState.position[1]
+      var y = playerState.position[0]
+      var limit = gameEnvironment.gridSize - 1
+
+      if (x === 0 && y === 0 && dir !== 'east') {
+        return 'east'
+      }
+
+      if (x === limit && y === 0 && dir !== 'south') {
+        return 'south'
+      }
+
+      if (x === limit && y === limit && dir !== 'west') {
+        return 'west'
+      }
+
+      if (x === 0 && y === limit && dir !== 'north') {
+        return 'north'
+      }
+
+      /////
+
+      if (x === 0 && dir === 'west') {
+        return 'north'
+      }
+
+      if (y === 0 && dir === 'north') {
+        return 'east'
+      }
+
+      if (y === limit && dir === 'south') {
+        return 'west'
+      }
+
+      if (x === limit && dir === 'east') {
+        return 'south'
+      }
+
+      return 'move'
     }
 
     if (playerState.ammo > 1) {

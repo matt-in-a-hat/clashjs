@@ -1,17 +1,21 @@
 var utils = require('../lib/utils.js');
 
-var enemies = {};
-
 module.exports = {
     info: {
         name: 'Ψ',
         style: 3
     },
-    ai: (playerState, enemiesStates, gameEnvironment) => { /* Siegfried */
+    ai: (playerState, enemiesStates, gameEnvironment) => {
         var directionToAmmo;
 
         if (utils.canKill(playerState, enemiesStates) && playerState.ammo) {
             return 'shoot';
+        }
+
+        for (var j = 0; j < enemiesStates.length; j++) {
+            if (utils.canKill(enemiesStates[j], [playerState])) {
+                return 'move';
+            }
         }
 
         if (gameEnvironment.ammoPosition.length) {
@@ -19,16 +23,17 @@ module.exports = {
             var closestAmmo = findClosestAmmo(gameEnvironment.ammoPosition);
 
             if (playerState.ammo === 0) {
-                directionToAmmo = utils.fastGetDirection(playerState.position, closestAmmo);
+
+                if (Math.random() < 0.4) {
+                    directionToAmmo = utils.getDirection(playerState.position, closestAmmo);
+                } else {
+                    directionToAmmo = utils.fastGetDirection(playerState.position, closestAmmo);
+                }
+
                 if (directionToAmmo !== playerState.direction) return directionToAmmo;
                 return 'move';
             }
-            //     directionToAmmo = utils.fastGetDirection(playerState.position, closestAmmo);
-            //     if (closestAmmo[0] === playerState.position[0] || closestAmmo[1] === playerState.position[1]) {
-            //         if (directionToAmmo !== playerState.direction) return directionToAmmo;
-            //     }
-            // }
-            //
+
             var dir = utils.fastGetDirection(playerState.position, fx());
             if (dir !== playerState.direction) return dir;
             return 'move';
@@ -51,11 +56,19 @@ module.exports = {
         function fx() {
             var min = 0;
             enemiesStates.forEach((e, i) => {
-                if (utils.getDistance(playerState.position, e.position) < utils.getDistance(playerState.position, enemiesStates[min].position)) {
+
+                if (dist(playerState.position, e.position) < dist(playerState.position, enemiesStates[min].position)) {
                     min = i;
                 }
             });
             return enemiesStates[min].position;
+        }
+
+        function dist(start = [], end = []) {
+          var diffVertical = Math.abs(start[0] - end[0]);
+          var diffHorizontal = Math.abs(start[1] - end[1]);
+
+          return Math.min(diffHorizontal, diffVertical);
         }
     }
 };
