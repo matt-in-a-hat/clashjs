@@ -21,10 +21,7 @@ ai: (playerState, enemiesState, gameEnvironment) => {
     var directionToAmmo;
     var closestAmmoPos;
 
-    console.log(playerState.custom);
-
     console.log("PAYPR");
-    console.log(enemiesState);
 
     if(!playerState.custom) {
         playerState.custom = {};
