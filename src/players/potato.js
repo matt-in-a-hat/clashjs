@@ -5,10 +5,15 @@ var ammo
 var Potato = {
   info: {
     name: 'Potato',
-    style: 0
+    style: 0,
+    handicap: 1
   },
   ai: (playerState, enemiesStates, gameEnvironment) => {
-    if (enemiesStates.length > 3) {
+    if (playerState.ammo > 0 && utils.canKill(playerState, enemiesStates)) {
+      return 'shoot'
+    }
+
+    if (enemiesStates.length > 5) {
       var dir = playerState.direction
 
       var x = playerState.position[1]
@@ -50,10 +55,6 @@ var Potato = {
       }
 
       return 'move'
-    }
-
-    if (playerState.ammo > 0 && utils.canKill(playerState, enemiesStates)) {
-      return 'shoot'
     }
 
     if (playerState.ammo > 1) {
