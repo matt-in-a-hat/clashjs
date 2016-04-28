@@ -2,6 +2,20 @@ var utils = require('../lib/utils.js');
 var noAmmo = true;
 var DIRECTIONS = ['north', 'east', 'south', 'west'];
 
+var canBeShot = function(player, enemies) {
+  // make arr of if you can be shot [true, false, false, true]
+  var arrayOfAnswers = enemies.map(function(enemy) {
+      return enemy.ammo > 0 && utils.isVisible(enemy.position, player.position, enemy.direction);
+    })
+
+  // If any are true. Dont do the move!
+  for (var i = 0; arrayOfAnswers.length < i; i++) {
+    if (arrayOfAnswers[i] === true) {
+      return true
+    }
+  }
+  return false
+};
 
 var turnToKill = function(player, enemies) {
   var turn = false;
@@ -48,6 +62,9 @@ var getEnemieswithAmmoAndVisible = function(player, enemies) {
   });
 };
 
+var getReallySafeMove = () => {
+  return utils.safeRandomMove()
+}
 
 var java4eva = {
   info: {
@@ -68,14 +85,27 @@ var java4eva = {
       directionToAmmo = utils.fastGetDirection(playerState.position, findCloseAmmo(playerState, gameEnvironment.ammoPosition))
 
       if (directionToAmmo !== playerState.direction) return directionToAmmo;
+
       return 'move';
     }
 
     var dangers = getEnemieswithAmmoAndVisible(playerState, enemiesStates)
+    if (dangers.length === 0) {
+      dangers = enemiesStates;
+    }
+    console.log(dangers)
 
     //LOOK for an enemy
     if(!noAmmo){
-      directionToEnemy = utils.fastGetDirection(playerState.position, dangers[0].position);
+      var directionToEnemy
+      if (dangers.length === 0) {
+        dangers = enemiesStates;
+      }
+      if (dangers && dangers.length < 0) {
+        directionToEnemy = utils.fastGetDirection(playerState.position, dangers[0].position);
+      } else {
+        directionToEnemy = utils.fastGetDirection(playerState.position, enemiesStates[0].position);
+      }
       if (directionToEnemy !== playerState.direction){
         var directionToMargeus = utils.fastGetDirection(dangers[0].position, playerState.position);
         if (directionToMargeus !== dangers[0].position){
@@ -87,7 +117,7 @@ var java4eva = {
       if (utils.canKill(playerState, enemiesStates) && playerState.ammo) {
       return 'shoot';
       }else{
-        return utils.safeRandomMove();
+        return getReallySafeMove()
       }
     }
 
@@ -103,7 +133,7 @@ var java4eva = {
       return 'move';
     }
 
-    return utils.safeRandomMove();
+    return getReallySafeMove()
   }
 };
 
