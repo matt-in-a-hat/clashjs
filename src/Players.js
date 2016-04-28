@@ -3,7 +3,7 @@ module.exports = {
   horror: require('./players/horror.js'),
   xmontoya: require('./players/xmontoya.js'),
   margeux: require('./players/margeux.js'),
-  flippycube: require('./players/flippycube.js')
+  flippycube: require('./players/flippycube.js'),
   margeux: require('./players/margeux.js'),
   Ψ: require('./players/psiphi.js'),
   potato: require('./players/potato.js'),
