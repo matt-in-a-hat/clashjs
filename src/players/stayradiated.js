@@ -218,7 +218,9 @@ function createMap(size, value = 0) {
 function ai(player, enemies, game) {
   fixPos(player);
 
-  console.log(game);
+  if (utils.canKill(player, enemies) && player.ammo) {
+    return 'shoot';
+  }
 
   const map = createMap(game.gridSize, Infinity);
 
