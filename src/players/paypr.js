@@ -62,14 +62,14 @@ ai: (playerState, enemiesState, gameEnvironment) => {
     }
 
     //move to ammo
-    if(!hasAmmo) {
+    // if(!hasAmmo) {
         if (directionToAmmo !== playerState.direction) {
             console.log("turning to ammo");
             return directionToAmmo;
         }
         console.log("moving to ammo");
         return 'move';
-    }
+    // }
 
     //otherwise hunt 
     if (gameEnvironment.ammoPosition.length > 0) {
