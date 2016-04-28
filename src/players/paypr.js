@@ -9,6 +9,7 @@ var gameRunner = {
   info: {
     name: 'paypr',
     style: 1,
+    handicap: 1,
     state: {
         test: "hello"
     }
