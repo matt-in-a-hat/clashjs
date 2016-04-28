@@ -3,7 +3,6 @@ module.exports = {
   xmontoya: require('./players/xmontoya.js'),
   flippycube: require('./players/flippycube.js'),
   psiphi: require('./players/psiphi.js'),
-  Ψ: require('./players/psiphi.js'),
   potato: require('./players/potato.js'),
   stayradiated: require('./players/stayradiated.js'),
   java4eva: require('./players/java4eva.js'),
