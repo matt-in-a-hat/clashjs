@@ -22,7 +22,6 @@ var Potato = {
       return x[0] === ammo[0] && x[1] === ammo[1]
     })
 
-    console.log('ammoStillExists: ', ammoStillExists)
     if (!ammoStillExists) {
       var ammos = gameEnvironment.ammoPosition
         .map(function (ammo) {
