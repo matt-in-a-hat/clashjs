@@ -52,7 +52,7 @@ var clashCoreUtils = (data) => {
       if (el[0] === currentPlayerState.position[0] && el[1] === currentPlayerState.position[1]) {
         gameEnvironment.ammoPosition.splice(index, 1);
         currentPlayerState.ammo += 1;
-        currentPlayerState.ammoDuration = 10;
+        currentPlayerState.ammoDuration = 20;
       }
     });
   }
