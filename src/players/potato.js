@@ -8,8 +8,6 @@ var Potato = {
     style: 0
   },
   ai: (playerState, enemiesStates, gameEnvironment) => {
-    console.log('Potato will kick your arse')
-
     if (playerState.ammo > 0 && utils.canKill(playerState, enemiesStates)) {
       return 'shoot'
     }
