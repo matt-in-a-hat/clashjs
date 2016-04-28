@@ -3,5 +3,6 @@ module.exports = {
   horror: require('./players/horror.js'),
   xmontoya: require('./players/xmontoya.js'),
   margeux: require('./players/margeux.js'),
-  potato: require('./players/potato.js')
+  potato: require('./players/potato.js'),
+  stayradiated: require('./players/stayradiated.js')
 }
