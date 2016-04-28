@@ -24,11 +24,11 @@ module.exports = {
 
             if (playerState.ammo === 0) {
 
-                if (Math.random() < 0.4) {
-                    directionToAmmo = utils.getDirection(playerState.position, closestAmmo);
-                } else {
+                // if (Math.random() < 0.4) {
+                    // directionToAmmo = utils.getDirection(playerState.position, closestAmmo);
+                // } else {
                     directionToAmmo = utils.fastGetDirection(playerState.position, closestAmmo);
-                }
+                // }
 
                 if (directionToAmmo !== playerState.direction) return directionToAmmo;
                 return 'move';
