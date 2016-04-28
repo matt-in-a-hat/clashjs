@@ -1,4 +1,4 @@
-var utils = require('../lib/utils.js');
+var utils = require('../lib/utils.js')
 
 var ammo
 
@@ -12,7 +12,7 @@ var Potato = {
       return 'shoot'
     }
 
-    if (playerState.ammo > 2) {
+    if (playerState.ammo > 0) {
       var players = enemiesStates
         .filter(function(player) {
           return player.isAlive
@@ -29,10 +29,12 @@ var Potato = {
 
       var enemy = players[0].player
 
-      var enemyDirection = utils.getDirection(playerState.position, enemy)
+      var enemyDirection = utils.getDirection(playerState.position, enemy.position)
 
       if (enemyDirection !== playerState.direction) {
         return enemyDirection
+      } else {
+        return 'move'
       }
     }
 
