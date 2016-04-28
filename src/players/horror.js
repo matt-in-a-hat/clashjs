@@ -11,6 +11,7 @@ var MUSOLINI = {
     if (utils.canKill(playerState, enemiesStates) && playerState.ammo) {
       return 'shoot';
     }
+    
     if (gameEnvironment.ammoPosition.length) {
       directionToAmmo = utils.fastGetDirection(playerState.position, gameEnvironment.ammoPosition[0]);
 
