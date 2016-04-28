@@ -3,7 +3,7 @@ var utils = require('../lib/utils.js');
 function ai(player, enemies, game) {
   var directionToAmmo;
 
-  if (utils.canKill(player, enemiesStates) && player.ammo) {
+  if (utils.canKill(player, enemies) && player.ammo) {
     return 'shoot';
   }
 
