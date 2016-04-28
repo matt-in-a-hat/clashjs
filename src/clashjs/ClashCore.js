@@ -1,6 +1,11 @@
+var _ = require('lodash');
 var music = require('./../lib/sound-effects').music;
 var PlayerClass = require('./PlayerClass.js');
 var executeMovementHelper = require('./executeMovementHelper.js');
+var lastMove = new Date().getTime() / 1000;
+var lastKill = false;
+var killTimeBeforeReset = 15;
+var moveTimeBeforeReset = 5;
 
 var DIRECTIONS = ['north', 'east', 'south', 'west'];
 
@@ -24,8 +29,33 @@ class ClashJS {
       };
       return player;
     });
-
     this.setupGame();
+  }
+
+  resetAlivePlayerLocations() {
+    let gridSize = this._gameEnvironment.gridSize;
+
+    for(var i = 0; i < this._playerStates.length; i++) {
+      console.log('for loop', i)
+      if (this._playerStates[i].isAlive === true) {
+
+        this._playerStates[i].position = [Math.floor(Math.random() * gridSize), Math.floor(Math.random() * gridSize)]
+        this._playerStates[i].direction = DIRECTIONS[Math.floor(Math.random() * 4)]
+      }
+    }
+
+    lastMove = new Date().getTime() / 1000;
+    lastKill = new Date().getTime() / 1000;
+  }
+
+  resetPlayers(action) {
+    if (lastKill && new Date().getTime() / 1000 - lastKill > killTimeBeforeReset) {
+      this.resetAlivePlayerLocations();
+    }
+
+    if (lastMove && new Date().getTime() / 1000 - lastMove > moveTimeBeforeReset) {
+      this.resetAlivePlayerLocations();
+    }
   }
 
   setupGame() {
@@ -48,6 +78,9 @@ class ClashJS {
       };
     });
 
+    lastMove = new Date().getTime() / 1000;
+    lastKill = false;
+
     this._currentPlayer = 0;
     this._createAmmo();
   }
@@ -59,8 +92,8 @@ class ClashJS {
     ];
 
     if (this._gameEnvironment.ammoPosition.some(el => {
-      return el[0] === newAmmoPosition[0] && el[1] === newAmmoPosition[1];
-    })) {
+        return el[0] === newAmmoPosition[0] && el[1] === newAmmoPosition[1];
+      })) {
       this._createAmmo();
       return;
     }
@@ -150,6 +183,16 @@ class ClashJS {
   }
 
   _savePlayerAction(playerIndex, playerAction, handicap) {
+    if(playerAction === 'move') {
+      lastMove = new Date().getTime() / 1000
+    }
+
+    if (playerAction === 'shoot') {
+      lastKill = new Date().getTime() / 1000
+    }
+
+    this.resetPlayers(playerAction)
+
     this._playerStates = executeMovementHelper(
       {
         handicap: handicap,
