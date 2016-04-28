@@ -6,4 +6,6 @@ module.exports = {
   Ψ: require('./players/psiphi.js'),
   potato: require('./players/potato.js'),
   stayradiated: require('./players/stayradiated.js'),
+  java4eva: require('./players/java4eva.js'),
+  paypr: require('./players/paypr.js')
 }
