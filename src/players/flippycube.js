@@ -52,8 +52,57 @@ var flippycube = {
                 else if (playerState.position[1] <= 0 && playerState.direction !== 'east') {
                     return 'east';
                 }
+                
+                // based on our direction
+                // loop through enemy positions
+                // if player in our next row or column, and has ammo, reverse direction
+                
+                var direction = playerState.direction;
+                var lookCol = playerState.position[0];
+                var lookRow = playerState.position[1];
+                switch(direction){
+                    case 'north':
+                    lookRow--;
+                    break;
+                    case 'south':
+                    lookRow++;
+                    break;
+                    case 'west':
+                    lookCol--;
+                    break;
+                    case 'east':
+                    lookCol++;
+                    break;             
+                }
+                var safeDirections=['north', 'south', 'east', 'west'];
+                var indexOfDirection;
+                for (i = 0; i < enemiesStates.length; i++) {
+                    if(enemiesStates[i].position[0]==lookCol && enemiesStates[i].ammo){
+                      indexOfDirection = safeDirections.indexOf(direction=='north'?'south':'north');
+                      safeDirections.splice(indexOfDirection,1);
+                    }
+                    if(enemiesStates[i].position[1]==lookRow && enemiesStates[i].ammo){
+                      indexOfDirection = safeDirections.indexOf(direction=='west'?'east':'east');
+                      safeDirections.splice(indexOfDirection,1);
+                    }
+                
+                }
+                console.log('Safe Directions: '+safeDirections);
+                if(safeDirections.length){
+                    if(playerState.direction===safeDirections[0]){
+                        return 'move';
+                    }else{
+                        return safeDirections[0];
+                    }
+                    
+                }
+                
+
+            } 
+            if (playerState.ammo) {
+               //return playerState.direction; 
             }
-            console.log(playerState.position);
+            
             return 'move';
 
         }
