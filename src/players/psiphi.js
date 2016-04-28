@@ -23,12 +23,7 @@ module.exports = {
                 if (directionToAmmo !== playerState.direction) return directionToAmmo;
                 return 'move';
             }
-            //     directionToAmmo = utils.fastGetDirection(playerState.position, closestAmmo);
-            //     if (closestAmmo[0] === playerState.position[0] || closestAmmo[1] === playerState.position[1]) {
-            //         if (directionToAmmo !== playerState.direction) return directionToAmmo;
-            //     }
-            // }
-            //
+
             var dir = utils.fastGetDirection(playerState.position, fx());
             if (dir !== playerState.direction) return dir;
             return 'move';
@@ -51,11 +46,19 @@ module.exports = {
         function fx() {
             var min = 0;
             enemiesStates.forEach((e, i) => {
-                if (utils.getDistance(playerState.position, e.position) < utils.getDistance(playerState.position, enemiesStates[min].position)) {
+
+                if (dist(playerState.position, e.position) < dist(playerState.position, enemiesStates[min].position)) {
                     min = i;
                 }
             });
             return enemiesStates[min].position;
+        }
+
+        function dist(start = [], end = []) {
+          var diffVertical = Math.abs(start[0] - end[0]);
+          var diffHorizontal = Math.abs(start[1] - end[1]);
+
+          return Math.min(diffHorizontal, diffVertical);
         }
     }
 };
