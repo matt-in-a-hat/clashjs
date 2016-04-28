@@ -74,9 +74,9 @@ function playerTurns(player, fn) {
   fn(Object.assign({}, player, {direction: 'west'}));
 }
 
-function playerMove(gridSize, player) {
+function playerMove(ammo, gridSize, player) {
   const {direction, position} = player;
-  let next = {direction};
+  let next = {direction, ammo: player.ammo};
 
   switch (direction) {
   case 'north':
@@ -92,6 +92,12 @@ function playerMove(gridSize, player) {
     next.position = [max(position[0] - 1, 0), position[1]];
     break;
   }
+
+  ammo.forEach(([y, x]) => {
+    if (y === next.position[1] && x === next.position[0]) {
+      next.ammo += 1;
+    }
+  });
 
   return next;
 }
@@ -175,7 +181,7 @@ function mapEnemie(map, enemie, value) {
   return map;
 }
 
-function recursiveMapEnemie(map, enemie, value) {
+function recursiveMapEnemie(ammo, map, enemie, value) {
   if (value > LOOK_INTO_THE_FUTURE) {
     return;
   }
@@ -183,15 +189,17 @@ function recursiveMapEnemie(map, enemie, value) {
   mapEnemie(map, enemie, value);
 
   recursiveMapEnemie(
+    ammo,
     map,
-    playerMove(map.length, enemie),
+    playerMove(ammo, map.length, enemie),
     value + 1,
   );
 
   playerTurns(enemie, (enemieTurns) => {
     recursiveMapEnemie(
+      ammo,
       map,
-      playerMove(map.length, enemieTurns),
+      playerMove(ammo, map.length, enemieTurns),
       value + 1,
     );
   });
@@ -208,6 +216,8 @@ function createMap(size, value = 0) {
 function ai(player, enemies, game) {
   fixPos(player);
 
+  console.log(game);
+
   const map = createMap(game.gridSize, Infinity);
 
   enemies.forEach((enemie) => {
@@ -217,7 +227,7 @@ function ai(player, enemies, game) {
       return;
     }
 
-    recursiveMapEnemie(map, enemie, 1);
+    recursiveMapEnemie(game.ammoPosition, map, enemie, 1);
   });
 
   console.log(printMap(map, player));
