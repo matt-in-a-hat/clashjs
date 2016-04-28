@@ -71,7 +71,7 @@ ai: (playerState, enemiesState, gameEnvironment) => {
     var myPos = playerState.position;
 
     var isUp = function(myPosition, enemyPosition) {
-        return myPosition[1] - enemyPosition[1] > 0;
+        return myPosition[1] - enemyPosition[1] < 0;
     };
 
     var isDown = function(myPosition, enemyPosition) {
@@ -79,7 +79,7 @@ ai: (playerState, enemiesState, gameEnvironment) => {
     };
 
     var isLeft = function(myPosition, enemyPosition) {
-        return myPosition[0] - enemyPosition[0] < 0;
+        return myPosition[0] - enemyPosition[0] > 0;
     };
     var isRight = function(myPosition, enemyPosition) {
         return !isLeft(myPosition,enemyPosition);
@@ -90,13 +90,37 @@ ai: (playerState, enemiesState, gameEnvironment) => {
         var enPos = enemy.position;
         var enDir = enemy.direction;
 
-        // is moving left and facing east                if moving right and facing west
-        if( (enPos[0]-1 === myX-1 && enDir == 'east') || (enPos[0]+1 === myX+1 && enDir == 'west'))  { //is left and moving east
-            if(isUp(enPos, myPos)) {
+
+        //if they are in the same lane and not moving out of it
+        //then point and FIRE
+        if(enPos[0] === myX && (enDir == 'north' || enDir == 'south')) {
+
+            if(isUp(myPos, enPos)) {
                 return 'north';
             }
             else return 'south';
         }
+
+        if(enPos[1] === myY && (enDir == 'east' || enDir == 'west')) {
+            if(isLeft(myPos, enPos)) {
+                return 'west';
+            }
+            else return 'east';
+        }
+
+
+
+        /*
+        // is moving left and facing east                if moving right and facing west
+        if( (enPos[0]+1 === myX && enDir == 'east') || (enPos[0]-1 === myX && enDir == 'west'))  { //is left and moving east
+            if(isUp(enPos, myPos)) {
+                console.log("PREDICTING ENEMY WILL BE NORTH");
+                return 'north';
+            }
+            console.log("PREDICTING ENEMY WILL BE SOUTH")
+            else return 'south';
+        }
+        */
     }
 
     //move to ammo
