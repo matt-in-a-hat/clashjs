@@ -66,9 +66,6 @@ var java4eva = {
 
     if (gameEnvironment.ammoPosition.length && noAmmo) {
       directionToAmmo = utils.fastGetDirection(playerState.position, findCloseAmmo(playerState, gameEnvironment.ammoPosition))
-      console.log(directionToAmmo)
-      console.log(playerState.direction)
-      console.log(directionToAmmo !== playerState.direction)
 
       if (directionToAmmo !== playerState.direction) return directionToAmmo;
       return 'move';
