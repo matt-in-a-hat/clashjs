@@ -106,7 +106,7 @@ var java4eva = {
       return moveToAmmo()
     }
 
-    var dangers = getEnemiesWithAmmo(playerState, enemiesStates)
+    var dangers = getEnemieswithAmmoAndVisible(playerState, enemiesStates)
     if (dangers.length === 0) {
       dangers = enemiesStates;
     }
@@ -135,10 +135,14 @@ var java4eva = {
       }
       if (directionToEnemy !== playerState.direction){
         var directionToMargeus = utils.fastGetDirection(dangers[0].position, playerState.position);
+
+        var closestEnemy = utils.getDistance(playerState, dangers[0])
+        console.log(closestEnemy)
+
         if (directionToMargeus !== dangers[0].position){
                   return directionToEnemy;
         } else {
-                  return getReallySafeMove();
+                  return
         }
       }
       if (utils.canKill(playerState, enemiesStates) && playerState.ammo) {
