@@ -52,7 +52,7 @@ var clashCoreUtils = (data) => {
       if (el[0] === currentPlayerState.position[0] && el[1] === currentPlayerState.position[1]) {
         gameEnvironment.ammoPosition.splice(index, 1);
         currentPlayerState.ammo += 1;
-        currentPlayerState.ammoDuration = 10;
+        currentPlayerState.ammoDuration = 20;
       }
     });
   }
@@ -69,7 +69,7 @@ var clashCoreUtils = (data) => {
     });
 
     playerStates.forEach((enemyObject, enemyIndex) => {
-      if (enemyObject.isAlive && utils.isVisible(currentPlayerState.position, enemyObject.position, currentPlayerState.direction) && (enemyObject.state && !enemyObject.state.meme)) {
+      if (enemyObject.isAlive && utils.isVisible(currentPlayerState.position, enemyObject.position, currentPlayerState.direction)) {
         if (handicap && handicap > 1 && !utils.isInRange(currentPlayerState.position, enemyObject.position, currentPlayerState.direction)) {
           return;
         }

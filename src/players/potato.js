@@ -13,16 +13,6 @@ var Potato = {
       return 'shoot'
     }
 
-    if (enemiesStates.length > 4) {
-      var dir = playerState.direction
-
-      var x = playerState.position[1]
-      var y = playerState.position[0]
-      var limit = gameEnvironment.gridSize - 1
-
-      return 'move'
-    }
-
     if (playerState.ammo > 0) {
       var players = enemiesStates
         .filter(function(player) {
