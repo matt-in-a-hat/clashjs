@@ -14,6 +14,9 @@ var Potato = {
 
     if (playerState.ammo > 2) {
       var players = enemiesStates
+        .filter(function(player) {
+          return player.isAlive
+        })
         .map(function (player) {
           return {
             distance: utils.getDistance(playerState.position, player.position),
@@ -24,7 +27,7 @@ var Potato = {
           return a.distance - b.distance
         })
 
-      var enemy = players[0]
+      var enemy = players[0].player
 
       var enemyDirection = utils.getDirection(playerState.position, enemy)
 
@@ -54,7 +57,6 @@ var Potato = {
       }
 
       if (ammos.length > 1) {
-        console.log('ammos[0].distance: ', ammos[0].distance)
         if (ammos[0].distance < 5) {
           ammo = ammos[0]
         } else {
