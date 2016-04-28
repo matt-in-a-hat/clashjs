@@ -4,7 +4,6 @@ var meme = {
   info: {
     name: 'meme',
     style: 1,
-    handicap: 1,
     state: {
         test: "hello"
     }
@@ -19,7 +18,6 @@ ai: (playerState, enemiesState, gameEnvironment) => {
     if(!playerState.custom) {
         playerState.custom = {};
     }
-
 
     //kill if possible
     if (utils.canKill(playerState, enemiesState) && playerState.ammo) {
@@ -129,12 +127,6 @@ ai: (playerState, enemiesState, gameEnvironment) => {
         }
 
     }
-
-
-
-
-
-    //return utils.randomMove();
 }
 };
 
