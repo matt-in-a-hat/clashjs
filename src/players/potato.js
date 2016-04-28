@@ -12,7 +12,7 @@ var Potato = {
       return 'shoot'
     }
 
-    if (playerState.ammo > 0) {
+    if (playerState.ammo > 1) {
       var players = enemiesStates
         .filter(function(player) {
           return player.isAlive
