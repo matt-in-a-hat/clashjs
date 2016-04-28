@@ -7,8 +7,8 @@ function ai(player, enemies, game) {
     return 'shoot';
   }
 
-  if (gameEnvironment.ammoPosition.length) {
-    directionToAmmo = utils.fastGetDirection(player.position, gameEnvironment.ammoPosition[0]);
+  if (game.ammoPosition.length) {
+    directionToAmmo = utils.fastGetDirection(player.position, game.ammoPosition[0]);
 
     if (directionToAmmo !== player.direction) return directionToAmmo;
     return utils.safeRandomMove();
@@ -19,8 +19,8 @@ function ai(player, enemies, game) {
 
 module.exports = {
   info: {
-    name: 'Stayradiated',
-    style: 2,
+    name: ':)',
+    style: 2
   },
-  ai: ai,
+  ai: ai
 };
