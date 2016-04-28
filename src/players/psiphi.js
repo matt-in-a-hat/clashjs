@@ -1,17 +1,21 @@
 var utils = require('../lib/utils.js');
 
-var enemies = {};
-
 module.exports = {
     info: {
         name: 'Ψ',
         style: 3
     },
-    ai: (playerState, enemiesStates, gameEnvironment) => { /* Siegfried */
+    ai: (playerState, enemiesStates, gameEnvironment) => {
         var directionToAmmo;
 
         if (utils.canKill(playerState, enemiesStates) && playerState.ammo) {
             return 'shoot';
+        }
+
+        for (var j = 0; j < enemiesStates.length; j++) {
+            if (utils.canKill(enemiesStates[j], [playerState])) {
+                return 'move';
+            }
         }
 
         if (gameEnvironment.ammoPosition.length) {
@@ -19,7 +23,13 @@ module.exports = {
             var closestAmmo = findClosestAmmo(gameEnvironment.ammoPosition);
 
             if (playerState.ammo === 0) {
-                directionToAmmo = utils.fastGetDirection(playerState.position, closestAmmo);
+
+                if (Math.random() < 0.4) {
+                    directionToAmmo = utils.getDirection(playerState.position, closestAmmo);
+                } else {
+                    directionToAmmo = utils.fastGetDirection(playerState.position, closestAmmo);
+                }
+
                 if (directionToAmmo !== playerState.direction) return directionToAmmo;
                 return 'move';
             }
