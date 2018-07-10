@@ -1,9 +1,9 @@
 var utils = require('../lib/utils.js');
 
-var MUSOLINI = {
+var bot = {
   info: {
     name: 'Horror',
-    style: 10
+    style: 1
   },
   ai: (playerState, enemiesStates, gameEnvironment) => {
     var directionToAmmo;
@@ -11,7 +11,7 @@ var MUSOLINI = {
     if (utils.canKill(playerState, enemiesStates) && playerState.ammo) {
       return 'shoot';
     }
-    
+
     if (gameEnvironment.ammoPosition.length) {
       directionToAmmo = utils.fastGetDirection(playerState.position, gameEnvironment.ammoPosition[0]);
 
@@ -22,4 +22,4 @@ var MUSOLINI = {
   }
 };
 
-module.exports = MUSOLINI;
+module.exports = bot;

@@ -1,9 +1,9 @@
 var utils = require('../lib/utils.js');
 
-var javierbyte = {
+var bot = {
   info: {
-    name: 'javierbyte',
-    style: 2
+    name: 'Deathstar',
+    style: 7
   },
   ai: (playerState, enemiesState, gameEnvironment) => {
     var directionToAmmo;
@@ -26,4 +26,4 @@ var javierbyte = {
   }
 };
 
-module.exports = javierbyte;
+module.exports = bot;
