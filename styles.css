@@ -109,6 +109,9 @@ b {
 .stats-results {
   text-align: right;
 }
+.stats-wins {
+  background-color: #313131;
+}
 .stats td {
   padding: 0 .5em;
 }

@@ -21,6 +21,8 @@ var Stats = React.createClass({
             <td></td>
             <td></td>
             <td>Wins</td>
+            <td>K</td>
+            <td>D</td>
           </thead>
           <tbody>
           {_.map(stats, (playerStats, index) => {
@@ -28,7 +30,9 @@ var Stats = React.createClass({
               <tr key={index} className={playerStats.isAlive ? '' : 'player-dead'}>
                 <td>{playerStats.isAlive ? '' : "💀"}</td>
                 <td className='player-name'>{playerStats.name}</td>
-                <td className='stats-results'>{playerStats.wins}</td>
+                <td className='stats-results stats-wins'>{playerStats.wins}</td>
+                <td className='stats-results stats-kdr'>{playerStats.kills}</td>
+                <td className='stats-results stats-kdr'>{playerStats.deaths}</td>
               </tr>
             );
           })}
