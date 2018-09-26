@@ -24,11 +24,7 @@ const Ammos = (props) => {
   return (
     <div className="clash-layer animation-glow">
       {ammoPosition.map((ammoPos, ammoIndex) => (
-        <Ammo
-          key={ammoIndex}
-          tileSize={tileSize}
-          ammoPos={ammoPos}
-        />
+        <Ammo key={ammoIndex} tileSize={tileSize} ammoPos={ammoPos} />
       ))}
     </div>
   )

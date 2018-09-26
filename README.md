@@ -6,16 +6,16 @@
 
 This is an experiment. The idea is to create a battle game, where the participants code their AI, and then we make them fight! You can play by adding your own AI to the game!
 
-# How to run the demo.
+# How to run this project
 
 Clone the repo and then
 
 ```sh
 npm install
-npm run dev
+npm start
 ```
 
-Then go to `http://localhost:8080`.
+Then go to `http://localhost:3000`.
 
 # How to participate.
 Add your player as specificed in [player definition](#player-definition) in

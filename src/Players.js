@@ -1,7 +1,6 @@
 const players = [
-  require('./players/default.js').default,
-  require('./players/default.js').default,
-  require('./players/r2d2.js').default
+  require('./players/deathstar.js'),
+  require('./players/horror.js')
 ]
 
 export default players

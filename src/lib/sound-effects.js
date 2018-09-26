@@ -1,4 +1,4 @@
-module.exports.lasers = {
+export const lasers = {
   laser0: new Audio('assets/sounds/lasers/laser0.mp3'),
   laser1: new Audio('assets/sounds/lasers/laser1.mp3'),
   laser2: new Audio('assets/sounds/lasers/laser2.mp3'),
@@ -10,13 +10,13 @@ module.exports.lasers = {
   laser8: new Audio('assets/sounds/lasers/laser8.mp3')
 }
 
-module.exports.explosions = {
+export const explosions = {
   explode0: new Audio('assets/sounds/explosions/explode0.wav'),
   explode1: new Audio('assets/sounds/explosions/explode1.wav'),
   explode2: new Audio('assets/sounds/explosions/explode2.wav')
 }
 
-module.exports.streak = {
+export const streak = {
   firstBlood: new Audio('assets/sounds/streak/first-blood.mp3'),
   doubleKill: new Audio('assets/sounds/streak/double-kill.mp3'),
   tripleKill: new Audio('assets/sounds/streak/triple-kill.mp3'),
@@ -28,6 +28,6 @@ module.exports.streak = {
   ownage: new Audio('assets/sounds/streak/ownage.mp3')
 }
 
-module.exports.music = {
+export const music = {
   theme0: new Audio('assets/sounds/music/flight.ogg')
 }

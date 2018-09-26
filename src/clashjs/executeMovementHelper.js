@@ -1,11 +1,14 @@
-import _ from 'lodash'
 import * as utils from '../lib/utils'
 
 const DIRECTIONS = ['north', 'east', 'south', 'west']
 
 var safeMovement = (value, size) => {
-  if (value < 0) return 0
-  if (value > size - 1) return size - 1
+  if (value < 0) {
+    return 0
+  }
+  if (value > size - 1) {
+    return size - 1
+  }
   return value
 }
 
@@ -91,40 +94,25 @@ var clashCoreUtils = (data) => {
       }
     })
 
-    if (kills.length) {
-      survivors = _.filter(playerStates, (player) => player.isAlive)
-      setTimeout(
+    if (kills.length > 0) {
+      survivors = playerStates.filter((player) => player.isAlive)
+
+      setImmediate(() =>
         coreCallback('KILL', {
           killer: playerInstances[playerIndex],
-          killed: _.map(kills, (index) => playerInstances[index])
-        }),
-        0
-      )
-      setTimeout(
-        evtCallback('KILL', {
-          killer: playerIndex,
-          killed: kills
-        }),
-        0
+          killed: kills.map((index) => playerInstances[index])
+        })
       )
 
-      if (!survivors.length) {
-        setTimeout(coreCallback('DRAW'), 0)
-        setTimeout(evtCallback('DRAW'), 0)
-      }
       if (survivors.length === 1) {
-        setTimeout(
+        setImmediate(() =>
           coreCallback('WIN', {
             winner: playerInstances[playerIndex]
-          }),
-          0
+          })
         )
-        setTimeout(
-          evtCallback('WIN', {
-            winner: playerInstances[playerIndex]
-          }),
-          0
-        )
+      }
+      if (survivors.length < 0) {
+        setImmediate(() => coreCallback('DRAW'))
       }
     }
   }

@@ -13,12 +13,12 @@ const Player = (props) => {
         width: tileSize + 'vmin',
         height: tileSize + 'vmin',
         transform:
-        'translateY(' +
-        tileSize * data.position[0] +
-        'vmin) ' +
-        'translateX(' +
-        tileSize * data.position[1] +
-        'vmin)'
+          'translateY(' +
+          tileSize * data.position[0] +
+          'vmin) ' +
+          'translateX(' +
+          tileSize * data.position[1] +
+          'vmin)'
       }}
     >
       <div
@@ -27,11 +27,8 @@ const Player = (props) => {
           width: tileSize + 'vmin',
           height: tileSize + 'vmin',
           backgroundImage:
-          'url(assets/rockets/rocket' + (data.style || 0) + '.png)',
-          transform:
-          'scale(1.25) rotate(' +
-          90 * direction +
-          'deg) '
+            'url(assets/rockets/rocket' + (data.style || 0) + '.png)',
+          transform: 'scale(1.25) rotate(' + 90 * direction + 'deg) '
         }}
       />
       <div className="clash-player-name">{info.name}</div>
@@ -83,7 +80,7 @@ class Players extends React.Component {
       if (!playerData.isAlive) return null
 
       const playerInfo = playerInstances[playerIndex].getInfo()
-      const direction = playerDirections[playerIndex] 
+      const direction = playerDirections[playerIndex]
 
       return (
         <Player

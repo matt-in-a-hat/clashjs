@@ -93,12 +93,23 @@ b {
   height: 100vmin;
 }
 
-.stats {
+.stats-large, .stats-small {
+  padding: 1em;
   background: rgba(0, 0, 0, 0.5);
   position: fixed;
+}
+
+.stats-large {
+  top: 20px;
+  right: 20px;
+  left: 20px;
+  bottom: 20px;
+  font-size: 2em;
+}
+
+.stats-small {
   top: 0;
   right: 0;
-  padding: 1em;
   font-size: 0.85em;
 }
 
@@ -112,20 +123,42 @@ b {
   font-family: monospace;
   font-size: 1.5em;
 }
-.stats-results {
-  text-align: right;
+.stats-large .stats-table {
+  width: 100%;
 }
+
+.stats-wins, .stats-kills, .stats-deaths {
+  text-align: center;
+  width: 20%;
+}
+
+.stats-large tbody tr:nth-child(2n-1) {
+  background: rgba(255, 255, 255, 0.1);
+}
+
 .stats td {
   padding: 0 .5em;
 }
 
-.player-dead td {
-  color: #55555;
+.stats-large tbody tr:first-child .player-name {
+  color: yellow;
+  font-weight: bold;
 }
 
-.player-dead .player-name {
+.stats-large td:first-child {
+  visibility: hidden;
+}
+.stats-small .player-dead td {
+  color: #55555;
+}
+.stats-small .player-dead .player-name {
   text-decoration: line-through;
 }
+
+.stats-large .player-name {
+  width: 50%;
+}
+
 
 .notifications {
   font-size: 0.85em;

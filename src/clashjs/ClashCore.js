@@ -3,11 +3,14 @@ import _ from 'lodash'
 import PlayerClass from './PlayerClass'
 import executeMovementHelper from './executeMovementHelper'
 
-var DIRECTIONS = ['north', 'east', 'south', 'west']
+const DIRECTIONS = ['north', 'east', 'south', 'west']
+
+const TOTAL_ROUNDS = 10
 
 class ClashJS {
   constructor(playerDefinitionArray, currentStats, evtCallback) {
-    this._totalRounds = 11
+    this._completed = false
+    this._totalRounds = TOTAL_ROUNDS
     this._rounds = 0
     this._gameStats = currentStats || {}
     this._evtCallback = evtCallback
@@ -76,6 +79,7 @@ class ClashJS {
 
   getState() {
     return {
+      completed: this._completed,
       gameEnvironment: this._gameEnvironment,
       gameStats: this._gameStats,
       rounds: this._rounds,
@@ -90,6 +94,7 @@ class ClashJS {
       this._handleCoreAction('DRAW')
       return this._evtCallback('DRAW')
     }
+
     let clonedStates = _.cloneDeep(this._playerStates, true)
     if (this._alivePlayerCount <= 3) {
       this._sudeenDeathCount++
@@ -128,40 +133,66 @@ class ClashJS {
   }
 
   _handleCoreAction(action, data) {
-    if (action === 'KILL') {
-      let { killer, killed } = data
-      this._gameStats[killer.getId()].kills++
-      _.forEach(this._playerInstances, (player) => {
-        let stats = this._gameStats[player.getId()]
-        if (killed.indexOf(player) > -1) {
-          this._alivePlayerCount--
-          stats.deaths++
-        }
-        if (stats.deaths) {
-          stats.kdr = stats.kills / stats.deaths
-        } else {
-          stats.kdr = stats.kills
-        }
-      })
+    switch (action) {
+      case 'KILL':
+        return this._handleKill(data)
+      case 'WIN':
+        return this._handleWin(data)
+      case 'DRAW':
+        return this._handleDraw(data)
+      default:
+        throw new Error(`Unhandled action: ${action}`)
     }
-    if (action === 'WIN') {
-      this._gameStats[data.winner.getId()].wins++
-      _.forEach(this._gameStats, (playerStats, key) => {
-        let { wins } = playerStats
-        playerStats.winrate = Math.round((wins * 100) / this._rounds)
-      })
+  }
 
-      if (this._rounds >= this._totalRounds) return this._evtCallback('END')
-    }
-    if (action === 'DRAW') {
-      _.forEach(this._gameStats, (playerStats, key) => {
-        let { wins } = playerStats
-        playerStats.winrate = Math.round((wins * 100) / this._rounds)
-      })
-      if (this._rounds >= this._totalRounds) {
-        return this._evtCallback('END')
+  _handleKill(data) {
+    const { killer, killed } = data
+    this._gameStats[killer.getId()].kills++
+    _.forEach(this._playerInstances, (player) => {
+      let stats = this._gameStats[player.getId()]
+      if (killed.indexOf(player) > -1) {
+        this._alivePlayerCount--
+        stats.deaths++
       }
+      if (stats.deaths) {
+        stats.kdr = stats.kills / stats.deaths
+      } else {
+        stats.kdr = stats.kills
+      }
+    })
+    return this._evtCallback('KILL', data)
+  }
+
+  _handleWin(data) {
+    this._gameStats[data.winner.getId()].wins++
+    for (const key in this._gameStats) {
+      const playerStats = this._gameStats[key]
+      const { wins } = playerStats
+      playerStats.winrate = Math.round((wins * 100) / this._rounds)
     }
+    if (this._rounds >= this._totalRounds) {
+      this._handleEnd()
+      return
+    }
+    this._evtCallback('WIN', data)
+  }
+
+  _handleDraw() {
+    for (const key in this._gameStats) {
+      const playerStats = this._gameStats[key]
+      const { wins } = playerStats
+      playerStats.winrate = Math.round((wins * 100) / this._rounds)
+    }
+    if (this._rounds >= this._totalRounds) {
+      this._handleEnd()
+      return
+    }
+    this._evtCallback('DRAW')
+  }
+
+  _handleEnd() {
+    this._completed = true
+    this._evtCallback('END')
   }
 
   _savePlayerAction(playerIndex, playerAction) {

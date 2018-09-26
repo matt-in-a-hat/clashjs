@@ -1,11 +1,11 @@
-import fx from './../lib/sound-effects'
+import * as fx from './../lib/sound-effects'
 import { generateBase32String as generateId } from './../lib/string-tools'
 
 class PlayerClass {
   constructor(options) {
     this._id = generateId(8)
     this._playerInfo = options.info
-    this._playerAI = options.ai
+    this._playerAI = options.default
   }
 
   getId() {

@@ -1,10 +1,10 @@
 var DIRECTIONS = ['north', 'east', 'south', 'west']
-var movements = ['north', 'east', 'south', 'west', 'shoot']
+var MOVEMENTS = ['north', 'east', 'south', 'west', 'shoot']
 
 var randomMove = () => {
   return Math.random() > 0.33
     ? 'move'
-    : movements[Math.floor(Math.random() * movements.length)]
+    : MOVEMENTS[Math.floor(Math.random() * MOVEMENTS.length)]
 }
 
 var safeRandomMove = () => {
@@ -89,6 +89,8 @@ var canKill = (currentPlayerState = {}, enemiesStates = []) => {
 }
 
 export {
+  DIRECTIONS,
+  MOVEMENTS,
   randomMove,
   getDirection,
   isVisible,

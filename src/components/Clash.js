@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 
-import fx from './../lib/sound-effects'
+import * as fx from './../lib/sound-effects'
 
 import Tiles from './Tiles'
 import Ammos from './Ammos'
@@ -68,16 +68,24 @@ class Clash extends React.Component {
 
   nextTurn() {
     var { playerStates } = this.ClashJS.getState()
-    var alivePlayerCount = playerStates.reduce((result, el) => {
-      return el.isAlive ? result + 1 : result
-    }, 0)
-    if (alivePlayerCount < 2) return false
+
+    const alivePlayerCount = playerStates.filter((el) => el.isAlive).length
+
+    // stop playing if there is only 1 player left
+    if (alivePlayerCount <= 1) {
+      return false
+    }
 
     var currentGameIndex = this.state.currentGameIndex
 
-    if (this.nextTurnTimeout) clearTimeout(this.nextTurnTimeout)
+    if (this.nextTurnTimeout) {
+      clearTimeout(this.nextTurnTimeout)
+    }
+
     this.nextTurnTimeout = window.setTimeout(() => {
-      if (this.state.currentGameIndex !== currentGameIndex) return
+      if (this.state.currentGameIndex !== currentGameIndex) {
+        return
+      }
       this.setState(
         {
           clashjs: this.ClashJS.nextPly(),
@@ -89,62 +97,72 @@ class Clash extends React.Component {
     }, this.state.speed)
   }
 
-  handleEvent(evt, data) {
-    if (evt === 'SHOOT') {
-      let newShoots = this.state.shoots
-      let players = this.ClashJS.getState().playerInstances
-      newShoots.push({
-        direction: data.direction,
-        origin: data.origin.slice(),
-        time: new Date().getTime()
-      })
-
-      this.setState({
-        shoots: newShoots
-      })
-
-      players[data.shooter].playLaser()
+  handleEvent(event, data) {
+    switch (event) {
+      case 'SHOOT':
+        return this._handleShoot(data)
+      case 'WIN':
+        return this.newGame()
+      case 'DRAW':
+        return this.newGame()
+      case 'KILL':
+        return this._handleKill(data)
+      case 'END':
+        return this._handleEnd()
+      default:
+        throw new Error(`Unhandled event: ${event}`)
     }
-    if (evt === 'WIN') return this.newGame()
-    if (evt === 'DRAW') {
-      this.newGame()
-    }
-    if (evt === 'KILL') return this._handleKill(data)
-    if (evt === 'END') return this.endGame()
+  }
+
+  _handleEnd() {
+    this.setState({
+      clashjs: this.ClashJS.getState()
+    })
+  }
+
+  _handleShoot(data) {
+    let newShoots = this.state.shoots
+    let players = this.ClashJS.getState().playerInstances
+    newShoots.push({
+      direction: data.direction,
+      origin: data.origin.slice(),
+      time: new Date().getTime()
+    })
+
+    this.setState({
+      shoots: newShoots
+    })
+
+    players[data.shooter].playLaser()
   }
 
   _handleKill(data) {
-    let players = this.ClashJS.getState().playerInstances
+    const { killer, killed } = data
+
     let kills = this.state.kills
-    let killer = players[data.killer]
-    let killed = _.map(data.killed, (index) => {
+
+    killed.forEach((player) => {
       killsStack.push(data.killer)
       killer.kills++
-      players[index].deaths++
-      return players[index]
+      player.deaths++
     })
+
     let notification = [
       killer.getName(),
       'killed',
-      _.map(killed, (player) => player.getName()).join(',')
+      killed.map((player) => player.getName()).join(' and ')
     ].join(' ')
 
-    kills.push({ date: new Date(), text: notification })
+    kills.push({
+      date: new Date(),
+      text: notification
+    })
+
     this.setState({
       kills: kills
     })
 
     setTimeout(() => this.handleStreak(data.killer, killer, killed), 100)
-  }
-
-  endGame() {
-    this.setState({
-      clashjs: null,
-      shoots: [],
-      speed: 0,
-      kills: []
-    })
-    return 'finish'
   }
 
   handleStreak(index, killer, killed) {
@@ -153,20 +171,20 @@ class Clash extends React.Component {
     let spreeMessage = ''
     let kills = this.state.kills
     if (killsStack.length === 1) {
-      setTimeout(fx.streak.firstBlood.play(), 50)
+      setTimeout(() => fx.streak.firstBlood.play(), 50)
     }
 
     switch (killed.length) {
       case 2:
-        setTimeout(fx.streak.doubleKill.play(), 100)
+        setTimeout(() => fx.streak.doubleKill.play(), 100)
         multiKill = killer.getName() + ' got a double kill!'
         break
       case 3:
-        setTimeout(fx.streak.tripleKill.play(), 100)
+        setTimeout(() => fx.streak.tripleKill.play(), 100)
         multiKill = killer.getName() + ' got a Triple Kill!'
         break
       case 4:
-        setTimeout(fx.streak.monsterKill.play(), 100)
+        setTimeout(() => fx.streak.monsterKill.play(), 100)
         multiKill = killer.getName() + ' is a MONSTER KILLER!'
         break
       default:
@@ -179,24 +197,24 @@ class Clash extends React.Component {
 
     switch (streakCount) {
       case 3:
-        setTimeout(fx.streak.killingSpree.play(), 300)
+        setTimeout(() => fx.streak.killingSpree.play(), 300)
         spreeMessage = killer.getName() + ' is on a killing spree!'
         break
       case 4:
-        setTimeout(fx.streak.dominating.play(), 300)
+        setTimeout(() => fx.streak.dominating.play(), 300)
         spreeMessage = killer.getName() + ' is dominating!'
         break
       case 5:
-        setTimeout(fx.streak.rampage.play(), 300)
+        setTimeout(() => fx.streak.rampage.play(), 300)
         spreeMessage = killer.getName() + ' is on a rampage of kills!'
         break
       case 6:
-        setTimeout(fx.streak.godLike.play(), 300)
+        setTimeout(() => fx.streak.godLike.play(), 300)
         spreeMessage = killer.getName() + ' is Godlike!'
         break
       default:
         spreeMessage = 'Somebody stop that bastard ' + killer.getName()
-        setTimeout(fx.streak.ownage.play(), 300)
+        setTimeout(() => fx.streak.ownage.play(), 300)
         break
     }
     kills.push({ date: new Date(), text: spreeMessage })
@@ -206,8 +224,10 @@ class Clash extends React.Component {
   }
 
   render() {
-    var { clashjs, shoots, kills } = this.state
-    var {
+    const { clashjs, shoots, kills } = this.state
+
+    const {
+      completed,
       gameEnvironment,
       gameStats,
       playerStates,
@@ -216,13 +236,23 @@ class Clash extends React.Component {
       totalRounds
     } = clashjs
 
-    gameEnvironment = gameEnvironment || {
-      gridSize: 13
-    }
-
     _.forEach(playerInstances, function(player, index) {
       gameStats[player.getId()].isAlive = playerStates[index].isAlive
     })
+
+    if (completed) {
+      return (
+        <div>
+          <Stats
+            large
+            rounds={rounds}
+            total={totalRounds}
+            playerStates={playerStates}
+            stats={gameStats}
+          />
+        </div>
+      )
+    }
 
     return (
       <div className="clash" onClick={this.handleClick}>

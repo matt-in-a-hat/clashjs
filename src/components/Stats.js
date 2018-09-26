@@ -1,22 +1,29 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import _ from 'lodash'
 
 class Stats extends React.Component {
   static propTypes = {
+    large: PropTypes.bool,
     stats: PropTypes.object.isRequired,
     rounds: PropTypes.number.isRequired,
     total: PropTypes.number.isRequired
   }
 
   render() {
-    let { stats, rounds, total } = this.props
-    stats = _.map(stats, (playerStats) => playerStats)
-    stats = _.sortBy(stats, (playerStats) => playerStats.wins * -1)
+    const { large, stats, rounds, total } = this.props
+
+    const sortedStats = Object.values(stats).sort((a, b) => {
+      return b.wins - a.wins
+    })
+
+    const title = large
+      ? `Results from ${total} rounds`
+      : `Round ${rounds} of ${total}`
+
     return (
-      <div className="stats">
+      <div className={large ? 'stats-large': 'stats-small'}>
         <div className="stats-title">
-          Round {rounds} of {total}
+          {title}
         </div>
         <table className="stats-table">
           <thead>
@@ -24,10 +31,12 @@ class Stats extends React.Component {
               <th />
               <th />
               <th>Wins</th>
+              <th>Kills</th>
+              <th>Deaths</th>
             </tr>
           </thead>
           <tbody>
-            {_.map(stats, (playerStats, index) => {
+            {sortedStats.map((playerStats, index) => {
               return (
                 <tr
                   key={index}
@@ -35,7 +44,9 @@ class Stats extends React.Component {
                 >
                   <td>{playerStats.isAlive ? '' : '💀'}</td>
                   <td className="player-name">{playerStats.name}</td>
-                  <td className="stats-results">{playerStats.wins}</td>
+                  <td className="stats-wins">{playerStats.wins}</td>
+                  <td className="stats-kills">{playerStats.kills}</td>
+                  <td className="stats-deaths">{playerStats.deaths}</td>
                 </tr>
               )
             })}
