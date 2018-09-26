@@ -1,26 +1,21 @@
-import * as utils from '../lib/utils.js'
-
 export const info = {
   name: 'Deathstar',
   style: 7
 }
 
-export default function(playerState, enemiesState, gameEnvironment) {
-  var directionToAmmo
-
-  if (Math.random() > 0.9) return 'shoot'
-
-  if (gameEnvironment.ammoPosition.length) {
-    directionToAmmo = utils.getDirection(
-      playerState.position,
-      gameEnvironment.ammoPosition[0]
-    )
-
-    if (directionToAmmo !== playerState.direction) {
-      return directionToAmmo
-    }
+const randomMove = () => {
+  if (Math.random() > 0.33) {
     return 'move'
   }
+  const directions = ['north', 'east', 'south', 'west']
+  return directions[Math.floor(Math.random() * directions.length)]
+}
 
-  return utils.randomMove()
+
+export default function(playerState, enemiesState, gameEnvironment) {
+  if (Math.random() > 0.9) {
+    return 'shoot'
+  }
+
+  return randomMove()
 }

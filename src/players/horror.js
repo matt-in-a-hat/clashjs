@@ -5,21 +5,25 @@ export const info = {
   style: 1
 }
 
-export default function(playerState, enemiesStates, gameEnvironment) {
+export default function (player, enemies, game) {
   var directionToAmmo
 
-  if (utils.canKill(playerState, enemiesStates) && playerState.ammo) {
+  if (utils.canKill(player, enemies) && player.ammo) {
     return 'shoot'
   }
 
-  if (gameEnvironment.ammoPosition.length) {
-    directionToAmmo = utils.fastGetDirection(
-      playerState.position,
-      gameEnvironment.ammoPosition[0]
+  if (game.ammoPosition.length) {
+    directionToAmmo = utils.getDirection(
+      player.position,
+      game.ammoPosition[0]
     )
 
-    if (directionToAmmo !== playerState.direction) return directionToAmmo
+    if (directionToAmmo !== player.direction) {
+      return directionToAmmo
+    }
+
     return 'move'
   }
-  return utils.safeRandomMove()
+
+  return utils.turn(player.direction, 2)
 }

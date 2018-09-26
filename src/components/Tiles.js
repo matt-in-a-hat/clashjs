@@ -11,23 +11,27 @@ class Tiles extends React.Component {
   }
 
   render() {
-    var { gridSize } = this.props
+    const { gridSize } = this.props
 
-    var tileSize = 100 / gridSize
-    var i
+    const tileSize = 100 / gridSize
 
-    var tileRender = []
-    for (i = 0; i < gridSize * gridSize; i++) {
-      tileRender.push(
+    const tiles = []
+    for (let i = 0; i < gridSize * gridSize; i++) {
+      tiles.push(
         <div
-          style={{ height: tileSize + 'vmin', width: tileSize + 'vmin' }}
-          className="clash-tile"
           key={i}
+          className="clash-tile"
+          style={{
+            height: tileSize + 'vmin',
+            width: tileSize + 'vmin'
+          }}
         />
       )
     }
 
-    return <div>{tileRender}</div>
+    return (
+      <div className="clash-tile-list">{tiles}</div>
+    )
   }
 }
 

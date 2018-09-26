@@ -6,6 +6,7 @@ import executeMovementHelper from './executeMovementHelper'
 const DIRECTIONS = ['north', 'east', 'south', 'west']
 
 const TOTAL_ROUNDS = 10
+const GRID_SIZE = 11
 
 class ClashJS {
   constructor(playerDefinitionArray, currentStats, evtCallback) {
@@ -34,7 +35,7 @@ class ClashJS {
 
   setupGame() {
     this._gameEnvironment = {
-      gridSize: 13,
+      gridSize: GRID_SIZE,
       ammoPosition: []
     }
     this._rounds++
