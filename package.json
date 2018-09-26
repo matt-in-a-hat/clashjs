@@ -1,0 +1,22 @@
+{
+  "name": "clashjs_reborn",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-scripts": "1.1.5",
+    "seedrandom": "^2.4.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "tidy": "prettier --write './src/**/*.js'"
+  },
+  "devDependencies": {
+    "prettier": "^1.14.3"
+  }
+}
