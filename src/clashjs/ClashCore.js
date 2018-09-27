@@ -5,7 +5,7 @@ import executeMovementHelper from './executeMovementHelper'
 
 const DIRECTIONS = ['north', 'east', 'south', 'west']
 
-const TOTAL_ROUNDS = 10
+const TOTAL_ROUNDS = 1000
 const GRID_SIZE = 15
 const ROUND_LENGTH_MULTIPLIER = 500
 
