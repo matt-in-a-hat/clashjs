@@ -1,20 +1,21 @@
 # [ClashJS](http://javierbyte.github.io/clashjs/)
 
-[![](spec_assets/screenshot.jpg)](http://javierbyte.github.io/clashjs/)
-
 The idea is to create a battle game, where the participants code their AI, and
 then we make them fight! You can play by adding your own AI to the game!
 
 # How to run this project
 
-Clone the repo and then run:
+Clone the repo, install dependencies, and start the game:
 
 ```sh
-npm install
+git clone https://github.com/stayradiated/clashjs
+cd clashjs
+
+npm ci
 npm start
 ```
 
-Then go to `http://localhost:3000`.
+Then open `http://localhost:3000` in your browser.
 
 # How to participate.
 Add your player as specificed in [player definition](#player-definition) in
@@ -36,9 +37,9 @@ Read the [game definitions](#game-definitions) to learn how to create your playe
 # Game. Functional Spec.
 
 ## Introduction.
-Games and coding are fun! So I want to make a game where we can confront AI vs AI in javascript.
-
-The game is simple: we will put all the players in a battle arena, and then make them fight to death. Where will be ammo in the arena so they can shoot each other. The last player alive wins!
+The game is simple: we will put all the players in a battle arena, and then
+make them fight to death. There will be ammo in the arena so they can shoot
+each other. The last player alive wins!
 
 ### Game Rules.
 * Every player will have a position and direction on the grid. A player can not go over the grid limits, and can only face north, east, south or west.
@@ -99,8 +100,8 @@ Let the *player state* (`player`) be an object with a player information like th
 }
 ```
 
-### Game Environment.
-Let the *game environment* (`map`) be a configuration object like the following:
+### Game Map.
+Let the *game map* (`map`) be an object like the following:
 
 ```js
 {
