@@ -29,9 +29,7 @@ class Tiles extends React.Component {
       )
     }
 
-    return (
-      <div className="clash-tile-list">{tiles}</div>
-    )
+    return <div className="clash-tile-list">{tiles}</div>
   }
 }
 

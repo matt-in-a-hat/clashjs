@@ -1,6 +1,3 @@
-const players = [
-  require('./players/deathstar.js'),
-  require('./players/horror.js')
-]
+const players = [require('./players/rando.js'), require('./players/trigger.js')]
 
 export default players

@@ -6,7 +6,8 @@ import executeMovementHelper from './executeMovementHelper'
 const DIRECTIONS = ['north', 'east', 'south', 'west']
 
 const TOTAL_ROUNDS = 10
-const GRID_SIZE = 11
+const GRID_SIZE = 15
+const ROUND_LENGTH_MULTIPLIER = 500
 
 class ClashJS {
   constructor(playerDefinitionArray, currentStats, evtCallback) {
@@ -16,7 +17,7 @@ class ClashJS {
     this._gameStats = currentStats || {}
     this._evtCallback = evtCallback
     this._alivePlayerCount = 0
-    this._sudeenDeathCount = 0
+    this._suddenDeathCount = 0
     this._playerInstances = playerDefinitionArray.map((playerDefinition) => {
       let player = new PlayerClass(playerDefinition)
       this._gameStats[player.getId()] = {
@@ -39,7 +40,7 @@ class ClashJS {
       ammoPosition: []
     }
     this._rounds++
-    this._sudeenDeathCount = 0
+    this._suddenDeathCount = 0
     this._playerInstances = _.shuffle(this._playerInstances)
     this._alivePlayerCount = this._playerInstances.length
     this._playerStates = this._playerInstances.map((playerInstance) => {
@@ -91,14 +92,17 @@ class ClashJS {
   }
 
   nextPly() {
-    if (this._sudeenDeathCount > 500 * this._alivePlayerCount) {
+    if (
+      this._suddenDeathCount >
+      ROUND_LENGTH_MULTIPLIER * this._alivePlayerCount
+    ) {
       this._handleCoreAction('DRAW')
-      return this._evtCallback('DRAW')
+      return this.getState()
     }
 
     let clonedStates = _.cloneDeep(this._playerStates, true)
     if (this._alivePlayerCount <= 3) {
-      this._sudeenDeathCount++
+      this._suddenDeathCount++
     }
 
     var otherPlayers = clonedStates.filter((currentEnemyFilter, index) => {

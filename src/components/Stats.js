@@ -21,10 +21,8 @@ class Stats extends React.Component {
       : `Round ${rounds} of ${total}`
 
     return (
-      <div className={large ? 'stats-large': 'stats-small'}>
-        <div className="stats-title">
-          {title}
-        </div>
+      <div className={large ? 'stats-large' : 'stats-small'}>
+        <div className="stats-title">{title}</div>
         <table className="stats-table">
           <thead>
             <tr>

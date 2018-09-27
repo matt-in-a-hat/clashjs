@@ -36,7 +36,7 @@ class Clash extends React.Component {
   }
 
   componentDidMount() {
-    this.nextTurn()
+    this.nextTurn(this.state.currentGameIndex)
   }
 
   handleClick() {
@@ -47,9 +47,14 @@ class Clash extends React.Component {
 
   newGame() {
     killsStack = []
-    var nextGameIndex = this.state.currentGameIndex + 1
 
-    if (this.nextTurnTimeout) clearTimeout(this.nextTurnTimeout)
+    this.setState({
+      currentGameIndex: this.state.currentGameIndex + 1
+    })
+
+    if (this.nextTurnTimeout) {
+      clearTimeout(this.nextTurnTimeout)
+    }
 
     this.nextTurnTimeout = window.setTimeout(() => {
       this.ClashJS.setupGame()
@@ -58,15 +63,14 @@ class Clash extends React.Component {
           clashjs: this.ClashJS.getState(),
           shoots: [],
           speed: 150,
-          kills: [],
-          currentGameIndex: nextGameIndex
+          kills: []
         },
-        this.nextTurn
+        () => this.nextTurn(this.state.currentGameIndex)
       )
     }, 1000)
   }
 
-  nextTurn() {
+  nextTurn(previousGameIndex) {
     var { playerStates } = this.ClashJS.getState()
 
     const alivePlayerCount = playerStates.filter((el) => el.isAlive).length
@@ -76,7 +80,10 @@ class Clash extends React.Component {
       return false
     }
 
-    var currentGameIndex = this.state.currentGameIndex
+    const { currentGameIndex } = this.state
+    if (previousGameIndex !== currentGameIndex) {
+      return false
+    }
 
     if (this.nextTurnTimeout) {
       clearTimeout(this.nextTurnTimeout)
@@ -92,7 +99,7 @@ class Clash extends React.Component {
           speed:
             this.state.speed > 15 ? parseInt(this.state.speed * 0.99, 10) : 15
         },
-        this.nextTurn
+        () => this.nextTurn(currentGameIndex)
       )
     }, this.state.speed)
   }
