@@ -18,12 +18,14 @@ export default function(player, enemies, map) {
     }
   }
 
-  if (Math.random() > 0.1) {
-    const safestMove = utils.getSafestMove(player, enemies, map)
-    if (safestMove) {
-      return safestMove
-    }
+  if (Math.random() > 0.9) {
+    return utils.randomMove()
   }
 
-  return utils.goToCenter(player, map)
+  const safestMove = utils.getSafestMove(player, enemies, map)
+  if (safestMove) {
+    return safestMove
+  }
+
+  return 'move'
 }
