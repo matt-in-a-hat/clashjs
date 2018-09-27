@@ -1,24 +1,24 @@
-export function randomMove() {
+function randomMove() {
   var moves = ['north', 'east', 'south', 'west', 'shoot']
   return Math.random() > 0.33
     ? 'move'
     : moves[Math.floor(Math.random() * moves.length)]
 }
 
-export function turn(yourDirection, howMuchTurn) {
+function turn(yourDirection, howMuchTurn) {
   const directions = ['north', 'east', 'south', 'west']
   var currentPositionIndex = directions.indexOf(yourDirection)
   return directions[(currentPositionIndex + howMuchTurn) % 4]
 }
 
-export const getDistance = (start = [], end = []) => {
+const getDistance = (start = [], end = []) => {
   var diffVertical = Math.abs(start[0] - end[0])
   var diffHorizontal = Math.abs(start[1] - end[1])
 
   return diffHorizontal + diffVertical
 }
 
-export function getDirection(start = [], end = []) {
+function getDirection(start = [], end = []) {
   var diffVertical = Math.abs(start[0] - end[0])
 
   if (diffVertical) {
@@ -27,7 +27,7 @@ export function getDirection(start = [], end = []) {
   return start[1] - end[1] > 0 ? 'west' : 'east'
 }
 
-export function isVisible(
+function isVisible(
   yourPosition = [],
   enemyPosition = [],
   yourDirection
@@ -58,7 +58,7 @@ export function isVisible(
   }
 }
 
-export function canKill(currentPlayerState = {}, enemiesStates = []) {
+function canKill(currentPlayerState = {}, enemiesStates = []) {
   return enemiesStates.some(
     (enemyObject) =>
       enemyObject.isAlive &&
@@ -70,7 +70,7 @@ export function canKill(currentPlayerState = {}, enemiesStates = []) {
   )
 }
 
-export function inDanger(player, enemies) {
+function inDanger(player, enemies) {
   if (enemies.length <= 0) {
     return false
   }
@@ -81,19 +81,19 @@ export function inDanger(player, enemies) {
   })
 }
 
-export function sameY(start, end) {
+function sameY(start, end) {
   return start[0] === end[0]
 }
 
-export function sameX(start, end) {
+function sameX(start, end) {
   return start[1] === end[1]
 }
 
-export function sameXY(start, end) {
+function sameXY(start, end) {
   return sameY(start, end) && sameX(start, end)
 }
 
-export function canMoveTowards(direction, player, map) {
+function canMoveTowards(direction, player, map) {
   let canDo = false
   switch (direction) {
     case 'north':
@@ -114,7 +114,7 @@ export function canMoveTowards(direction, player, map) {
   return canDo
 }
 
-export function canDie(player, enemies) {
+function canDie(player, enemies) {
   return enemies.some((enemy) => {
     return (
       enemy.ammo > 0 &&
@@ -123,7 +123,7 @@ export function canDie(player, enemies) {
   })
 }
 
-export function getClosestAmmo(player, ammoPosition) {
+function getClosestAmmo(player, ammoPosition) {
   if (!ammoPosition.length) {
     return
   }
@@ -141,7 +141,7 @@ export function getClosestAmmo(player, ammoPosition) {
   return closest
 }
 
-export function getReachableAmmo(player, enemies, map) {
+function getReachableAmmo(player, enemies, map) {
   const reachable = map.ammoPosition.filter(function(ammo) {
     const distance = getDistance(player.position, ammo)
 
@@ -153,7 +153,7 @@ export function getReachableAmmo(player, enemies, map) {
   return reachable
 }
 
-export function shouldMoveForAmmo(player, enemies, map) {
+function shouldMoveForAmmo(player, enemies, map) {
   const ammo = getReachableAmmo(player, enemies, map)
 
   if (!ammo.length) {
@@ -170,7 +170,7 @@ export function shouldMoveForAmmo(player, enemies, map) {
   return 'move'
 }
 
-export function isMovementSafe(action, player, enemies, map) {
+function isMovementSafe(action, player, enemies, map) {
   const futureState = JSON.parse(JSON.stringify(player))
 
   if (action === 'move') {
@@ -207,7 +207,7 @@ export function isMovementSafe(action, player, enemies, map) {
   }
 }
 
-export function getSafestMove(player, enemies, map) {
+function getSafestMove(player, enemies, map) {
   const isSafeHere = isMovementSafe('north', player, enemies, map)
   const isSafeToMove = isMovementSafe('move', player, enemies, map)
 
@@ -223,7 +223,7 @@ export function getSafestMove(player, enemies, map) {
   return
 }
 
-export function goToCenter(player, map) {
+function goToCenter(player, map) {
   const center = [map.gridSize, map.gridSize].map((coord) =>
     Math.floor(coord / 2)
   )
@@ -236,7 +236,7 @@ export function goToCenter(player, map) {
   return movement
 }
 
-export function getClosestEnemy(player, enemies) {
+function getClosestEnemy(player, enemies) {
   let clonedStates = enemies.slice(0, enemies.length)
 
   clonedStates = clonedStates.filter(function(enemy) {
@@ -254,7 +254,7 @@ export function getClosestEnemy(player, enemies) {
   return closest
 }
 
-export function getBackPosition(enemy) {
+function getBackPosition(enemy) {
   const back = enemy.position.slice(0, 2)
   switch (enemy.direction) {
     case 'north':
@@ -276,7 +276,7 @@ export function getBackPosition(enemy) {
   return back
 }
 
-export function sneakyGetDirection(player, enemy) {
+function sneakyGetDirection(player, enemy) {
   const diffVertical = Math.abs(player.position[0] - player.position[0])
 
   if (
@@ -289,31 +289,31 @@ export function sneakyGetDirection(player, enemy) {
   return player.position[1] - enemy.position[1] > 0 ? 'west' : 'east'
 }
 
-export function verticalDelta(start, end) {
+function verticalDelta(start, end) {
   return start[0] - end[0]
 }
 
-export function absVerticalDelta(start, end) {
+function absVerticalDelta(start, end) {
   return Math.abs(verticalDelta(start, end))
 }
 
-export function horizontalDelta(start, end) {
+function horizontalDelta(start, end) {
   return start[1] - end[1]
 }
 
-export function absHorizontalDelta(start, end) {
+function absHorizontalDelta(start, end) {
   return Math.abs(horizontalDelta(start, end))
 }
 
-export function isVertical(direction) {
+function isVertical(direction) {
   return ['north', 'south'].indexOf(direction) > -1
 }
 
-export function isHorizontal(direction) {
+function isHorizontal(direction) {
   return ['west', 'east'].indexOf(direction) > -1
 }
 
-export function opositeDirection(direction) {
+function opositeDirection(direction) {
   let ret
   switch (direction) {
     case 'north':
@@ -334,7 +334,7 @@ export function opositeDirection(direction) {
   return ret
 }
 
-export function chaseEnemy(player, enemies, map) {
+function chaseEnemy(player, enemies, map) {
   const closest = getClosestEnemy(player, enemies)
   const direction = sneakyGetDirection(player, closest)
 
@@ -359,7 +359,7 @@ export function chaseEnemy(player, enemies, map) {
   return 'move'
 }
 
-export function turnToKill(player, enemies) {
+function turnToKill(player, enemies) {
   let turn = false
   const mockState = JSON.parse(JSON.stringify(player))
 
@@ -375,7 +375,7 @@ export function turnToKill(player, enemies) {
   return turn
 }
 
-export function turnToAmbush(player, enemies) {
+function turnToAmbush(player, enemies) {
   const killables = enemies.filter(function(enemy) {
     switch (enemy.direction) {
       case 'north':
@@ -409,7 +409,7 @@ export function turnToAmbush(player, enemies) {
   return 'north'
 }
 
-export function canKillMany(player, enemies) {
+function canKillMany(player, enemies) {
   let { position, direction } = player
   const targets = enemies.filter((enemy) =>
     isVisible(position, enemy.position, direction)
@@ -417,7 +417,7 @@ export function canKillMany(player, enemies) {
   return targets.length > 2
 }
 
-export function canKillAll(player, enemies) {
+function canKillAll(player, enemies) {
   if (!player.ammo) {
     return false
   }
@@ -425,7 +425,7 @@ export function canKillAll(player, enemies) {
   return enemies.length === killable.length
 }
 
-export function getImmediateThreats(player, enemies) {
+function getImmediateThreats(player, enemies) {
   return enemies.filter(
     (enemy) =>
       enemy.ammo > 0 &&
@@ -433,10 +433,51 @@ export function getImmediateThreats(player, enemies) {
   )
 }
 
-export function getDangerousEnemies(enemies) {
+function getDangerousEnemies(enemies) {
   const dangerous = enemies.filter((enemy) => enemy.ammo)
   if (dangerous.length > 0) {
     return dangerous
   }
   return enemies
 }
+
+const utils = {
+  randomMove,
+  turn,
+  getDirection,
+  isVisible,
+  canKill,
+  inDanger,
+  sameY,
+  sameX,
+  sameXY,
+  canMoveTowards,
+  canDie,
+  getClosestAmmo,
+  getReachableAmmo,
+  shouldMoveForAmmo,
+  isMovementSafe,
+  getSafestMove,
+  goToCenter,
+  getClosestEnemy,
+  getBackPosition,
+  sneakyGetDirection,
+  verticalDelta,
+  absVerticalDelta,
+  horizontalDelta,
+  absHorizontalDelta,
+  isVertical,
+  isHorizontal,
+  opositeDirection,
+  chaseEnemy,
+  turnToKill,
+  turnToAmbush,
+  canKillMany,
+  canKillAll,
+  getImmediateThreats,
+  getDangerousEnemies
+}
+
+Object.freeze(utils)
+
+module.exports = utils
