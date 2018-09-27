@@ -61,27 +61,34 @@ The game is simple: we will put all the players in a battle arena, and then make
 Let the *player definition* (`playerDefinition`) be an object with the player info and its AI function.
 
 ```js
-{
-  info: {
-    name: 'javierbyte',
-    style: 2 // one of the 6 styles (0 to 5)
-  },
-  ai: function(playerState, enemiesStates, gameEnvironment) {
-    // think...
-    return 'move';
-  }
+export const info = {
+  name: 'x-wing',
+  style: 2 // one of the 6 styles (0 to 5)
+}
+
+export default function(player, enemies, map) {
+  // think...
+  return 'move';
 }
 ```
 
-The AI function will receive [`playerState`](#player-state), `enemiesStates` (array of all the other players `playerState`s), and [`gameEnvironment`](#game-environment) as arguments, and must return one of the following strings:
-  * `move`: To move one tile in the current direction.
-  * `north`, `east`, `south` or `west`: To turn to that direction.
-  * `shoot`. To shoot if the user has enough ammo.
+The AI function will receive:
 
-Any other response, trying to move outside the arena size (`gameEnvironment.gridSize`) or trying to shoot without ammo, will result in a no-op.
+- [`player`](#player-state)
+- `enemies` (array of all the other players state)
+- and [`map`](#game-map)
+
+as arguments, and must return one of the following strings:
+
+  * `"north"`, `"east"`, `"south"` or `"west"`: To turn to that direction.
+  * `"move"`: To move one tile in the current direction.
+  * `"shoot"`: To shoot if the user has enough ammo.
+
+Any other response, trying to move outside the arena size (`map.gridSize`) or trying to shoot without ammo, will result in a no-op.
 
 ### Player State.
-Let the *player state* (`playerState`) be an object with a player information like the following:
+
+Let the *player state* (`player`) be an object with a player information like the following:
 
 ```js
 {
@@ -93,21 +100,11 @@ Let the *player state* (`playerState`) be an object with a player information li
 ```
 
 ### Game Environment.
-Let the *game environment* (`gameEnvironment`) be a configuration object like the following:
+Let the *game environment* (`map`) be a configuration object like the following:
 
 ```js
 {
   gridSize: [<number>, <number>],
   ammoPosition: <array of [<number>, <number>] arrays>
-}
-```
-
-### Game State.
-Let the *game state* (`gameState`) be an object with the array of all user states, and the game environment.
-
-```js
-{
-  playerStates: <array of `playerStates`>,
-  gameEnvironment: <`gameEnvironment`>
 }
 ```
